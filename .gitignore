@@ -1,5 +1,6 @@
 node_modules
 .env
+.env.test
 yarn-error.log
 .idea/
 .vscode/
@@ -9,3 +10,11 @@ temp/
 logs
 .DS_Store
 # public/
+# Test output with coveralls
+.nyc_output
+trash/
+public/
+.yarn-integrity
+coverage
+*.lcov
+lib-cov
