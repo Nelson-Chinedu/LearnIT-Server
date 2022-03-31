@@ -65,8 +65,40 @@ export default [
   {
     firstname: 'doe',
     lastname: 'john',
-    email: 'doejohn@email.com',
+    email: 'doebjohn@email.com',
     password: 'doe123456',
     role: 'mentee',
+  },
+  {
+    email: '',
+    password: '',
+  },
+  {
+    email: '',
+    password: 'testpassword',
+  },
+  {
+    email: 'john@email.com',
+    password: '',
+  },
+  {
+    email: 'johnemailcom',
+    password: 'testing',
+  },
+  {
+    email: 'john@email.com',
+    password: 'tes',
+  },
+  {
+    email: 'doejeohn@email.com',
+    password: 'testing1234',
+  },
+  {
+    email: 'johndoe@email.com',
+    password: 'testing1234',
+  },
+  {
+    email: 'johndoe@email.com',
+    password: 'john123456',
   },
 ];

@@ -12,13 +12,14 @@ const signupController = async (req: Request, res: Response) => {
   const hashedPassword = await hash.hashPassword(req.body.password);
 
   try {
-    const data: boolean = await UserServices.createUser({
+    const userId: string = await UserServices.createUser({
       ...req.body,
       password: hashedPassword,
     });
-    if (data) {
+
+    if (userId) {
       const accessToken = token.createToken(
-        { id: 'newAccount.id' },
+        { id: userId },
         process.env.VERIFICATION_JWT_kEY as string,
         '2d'
       );

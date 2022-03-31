@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 
@@ -126,7 +125,7 @@ describe('/auth/signup', () => {
       .post(`${prefix}/auth/signup`)
       .send(testUser[7])
       .end((_err, res) => {
-        expect(res.status).to.equal(400);
+        expect(res.status).to.equal(409);
         done();
       });
   });
