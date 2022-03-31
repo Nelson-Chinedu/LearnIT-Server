@@ -13,7 +13,7 @@ interface ICreateUser {
 
 class UserServices {
   /**
-   * findUserByEmail - used to get user from db by email
+   * findUserByEmail - used to get find email from db
    * @param {string} email - email of the user
    * @returns {object} user data from db
    */
@@ -33,9 +33,9 @@ class UserServices {
   /**
    * createUser - used to create new user to db
    * @param {object} payload
-   * @returns {boolean} true if created
+   * @returns {string} user id
    */
-  async createUser(payload: ICreateUser) {
+  async createUser(payload: ICreateUser): Promise<string> {
     try {
       const { email, role, password, firstname, lastname } = payload;
 
@@ -58,7 +58,7 @@ class UserServices {
         account: newAccount,
       });
       await AppDataSource.manager.save(newProfile);
-      return true;
+      return newAccount.id;
     } catch (error: any) {
       throw new Error(error);
     }

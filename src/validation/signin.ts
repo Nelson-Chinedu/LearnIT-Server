@@ -2,16 +2,16 @@ import { Request, Response } from 'express';
 import Joi from 'joi';
 
 const schema = Joi.object({
-  firstname: Joi.string().required(),
-  lastname: Joi.string().required(),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ['com', 'net'] },
+    })
     .required(),
   password: Joi.string().min(8).required(),
-  role: Joi.string().required(),
 });
 
-const signupValidator = (req: Request, res: Response, next: () => void) => {
+const signinValidator = (req: Request, res: Response, next: () => void) => {
   const validationResult = schema.validate(req.body);
 
   if (validationResult.error) {
@@ -19,7 +19,7 @@ const signupValidator = (req: Request, res: Response, next: () => void) => {
       .status(400)
       .send({ message: validationResult.error.details[0].message });
   }
-  next();
+  return next();
 };
 
-export default signupValidator;
+export default signinValidator;
