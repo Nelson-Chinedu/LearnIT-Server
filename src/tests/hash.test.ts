@@ -14,7 +14,7 @@ describe('Hash', () => {
     const password2 = 'random';
     const hashedPassword = await hash.hashPassword(password2);
     const compare = await hash.comparePassword(password1, hashedPassword);
-    expect(compare).to.be.false;
+    expect(compare).to.be.equal(false);
   });
 
   it('should return true when both passwords match', async () => {
@@ -22,6 +22,6 @@ describe('Hash', () => {
     const password2 = 'dummy';
     const hashedPassword = await hash.hashPassword(password2);
     const compare = await hash.comparePassword(password1, hashedPassword);
-    expect(compare).to.be.true;
+    expect(compare).to.be.equal(true);
   });
 });
