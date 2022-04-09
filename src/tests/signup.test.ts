@@ -136,7 +136,7 @@ describe('/auth/signup', () => {
       .send(testUser[9])
       .end((_err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body.message).to.equal('Account created');
+        expect(res.body.message).to.equal('Account created successfully');
         expect(res.body).to.be.an('object');
         done();
       });

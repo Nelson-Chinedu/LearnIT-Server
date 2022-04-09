@@ -63,6 +63,26 @@ class UserServices {
       throw new Error(error);
     }
   }
+
+  /**
+   * findUserById - used to find user by ID in Account table
+   * @param {string} id
+   * @returns {object} Account with relation or null
+   */
+  async findUserById(id: any) {
+    try {
+      const user: Account | null = await AppDataSource.manager
+        .getRepository(Account)
+        .findOne({
+          where: { id },
+          relations: ['profile'],
+        });
+
+      return user;
+    } catch (error) {
+      throw new Error('An error occurred while fetching user');
+    }
+  }
 }
 
 export default new UserServices();

@@ -27,7 +27,16 @@ const signupController = async (req: Request, res: Response) => {
         role: req.body.role,
         token: accessToken,
       };
-      return respondWithSuccess(res, 201, 'Account created', payload);
+      return respondWithSuccess(
+        res.cookie('cid', accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          path: '/',
+        }),
+        201,
+        'Account created successfully',
+        payload
+      );
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occurred', error });
