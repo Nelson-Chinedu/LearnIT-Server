@@ -8,7 +8,7 @@ const schema = Joi.object({
       tlds: { allow: ['com', 'net'] },
     })
     .required(),
-  password: Joi.string().min(8).required(),
+  password: Joi.string().required(),
 });
 
 const signinValidator = (req: Request, res: Response, next: () => void) => {
