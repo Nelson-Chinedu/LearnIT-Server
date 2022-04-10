@@ -83,6 +83,58 @@ class UserServices {
       throw new Error('An error occurred while fetching user');
     }
   }
+
+  /**
+   * updateProfile - used to update user profile using id
+   * @param {string} id
+   * @param {object} data
+   * @returns {object}
+   */
+  async updateProfile(
+    id: string,
+    data: {
+      firstname: string;
+      lastname: string;
+      phone: string;
+      city: string;
+      state: string;
+      country: string;
+      address: string;
+      zipCode: string;
+    }
+  ) {
+    const {
+      firstname,
+      lastname,
+      phone,
+      city,
+      state,
+      country,
+      address,
+      zipCode,
+    } = data;
+    try {
+      const profile: any = await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Profile)
+        .set({
+          firstname,
+          lastname,
+          phone,
+          city,
+          state,
+          country,
+          address,
+          zipCode,
+        })
+        .where('id = :id', { id })
+        .execute();
+
+      return profile;
+    } catch (error) {
+      throw new Error('An error occurred while updating user');
+    }
+  }
 }
 
 export default new UserServices();

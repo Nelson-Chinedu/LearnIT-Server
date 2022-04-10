@@ -7,8 +7,11 @@ import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
-const userController = async (req: Request, res: Response) => {
-  const { user: id }: any = req;
+const getProfileController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { user: id } = req;
 
   try {
     const user: Account | null = await UserServices.findUserById(id);
@@ -18,29 +21,15 @@ const userController = async (req: Request, res: Response) => {
     if (user) {
       const {
         profile: {
-          firstname,
-          lastname,
-          phone,
-          city,
-          state,
-          zipCode,
-          address,
-          country,
           account: { email, role },
+          ...rest
         },
       } = user;
 
       respondWithSuccess(res, 200, 'User details', {
-        firstname,
-        lastname,
-        phone,
-        city,
-        state,
-        zipCode,
-        address,
-        country,
         email,
         role,
+        ...rest,
       });
     }
   } catch (error: any) {
@@ -49,4 +38,4 @@ const userController = async (req: Request, res: Response) => {
   }
 };
 
-export default userController;
+export default getProfileController;

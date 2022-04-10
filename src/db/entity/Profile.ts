@@ -7,6 +7,8 @@ import {
   OneToOne,
   JoinColumn,
   BeforeInsert,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 import Account from './Account';
@@ -39,6 +41,12 @@ export default class Profile extends BaseEntity {
 
   @Column('varchar')
   country: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToOne((_type: any) => Account, (account: Account) => account.profile, {
     eager: true,
