@@ -1,4 +1,4 @@
-import { Account, Profile } from '../db';
+import { Account, Bio, Profile } from '../db';
 import { UserRole } from '../db/entity/Account';
 
 import { AppDataSource } from '../index';
@@ -58,6 +58,15 @@ class UserServices {
         account: newAccount,
       });
       await AppDataSource.manager.save(newProfile);
+
+      if (role === 'mentor') {
+        const newBio: Bio = AppDataSource.manager.create(Bio, {
+          mentorBio: '',
+          account: newAccount,
+        });
+        await AppDataSource.manager.save(newBio);
+      }
+
       return newAccount.id;
     } catch (error: any) {
       throw new Error(error);
@@ -75,7 +84,7 @@ class UserServices {
         .getRepository(Account)
         .findOne({
           where: { id },
-          relations: ['profile'],
+          relations: ['profile', 'bio'],
         });
 
       return user;
@@ -128,6 +137,35 @@ class UserServices {
           zipCode,
         })
         .where('id = :id', { id })
+        .execute();
+
+      return profile;
+    } catch (error) {
+      throw new Error('An error occurred while updating user');
+    }
+  }
+
+  /**
+   * updateBio - used to update user <Mentor> bio using id
+   * @param {string} id
+   * @param {object} data
+   * @returns {object}
+   */
+  async updateBio(
+    id: string,
+    data: {
+      mentorBio: string;
+    }
+  ) {
+    const { mentorBio } = data;
+    try {
+      const profile: any = await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Bio)
+        .set({
+          mentorBio,
+        })
+        .where('account.id = :id', { id })
         .execute();
 
       return profile;

@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 
 import Account from './Account';
+import Bio from './Bio';
 
 @Entity('Profile')
 export default class Profile extends BaseEntity {

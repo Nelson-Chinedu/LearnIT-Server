@@ -7,32 +7,23 @@ import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
-const getProfileController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { user: id } = req;
-
+const updateBio = async (req: Request, res: Response): Promise<void> => {
   try {
+    const { user: id } = req;
     const user: Account | null = await UserServices.findUserById(id);
 
     if (!user) respondWithWarning(res, 401, 'unauthorized', {});
 
     if (user) {
       const {
-        bio: { mentorBio },
-        profile: {
-          account: { email, role },
-          ...rest
-        },
+        profile: { account },
       } = user;
 
-      respondWithSuccess(res, 200, 'User details', {
-        email,
-        role,
-        mentorBio,
-        ...rest,
-      });
+      const data: object = await UserServices.updateBio(account.id, req.body);
+
+      if (data) {
+        respondWithSuccess(res, 204, '', {});
+      }
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
@@ -40,4 +31,4 @@ const getProfileController = async (
   }
 };
 
-export default getProfileController;
+export default updateBio;

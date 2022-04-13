@@ -10,6 +10,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import Profile from './Profile';
+import Bio from './Bio';
 
 export enum UserRole {
   MENTOR = 'mentor',
@@ -44,6 +45,9 @@ export default class Account extends BaseEntity {
 
   @OneToOne((_type: any) => Profile, (profile: Profile) => profile.account)
   profile: Profile;
+
+  @OneToOne((_type: any) => Bio, (bio: Bio) => bio.account)
+  bio: Bio;
 
   @BeforeInsert()
   addId() {
