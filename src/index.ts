@@ -22,7 +22,7 @@ export const AppDataSource = new DataSource(config);
 const app = express();
 
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 

@@ -11,7 +11,7 @@ import Token from '../util/Token';
  * @param {function} next
  * @returns {next} if cookie is valid || {401} if cookie is invalid
  */
-export const authorization = (
+export const authentication = (
   req: Request,
   res: Response,
   next: () => void
