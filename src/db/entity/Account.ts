@@ -8,9 +8,11 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import Profile from './Profile';
 import Bio from './Bio';
+import Course from './Course';
 
 export enum UserRole {
   MENTOR = 'mentor',
@@ -48,6 +50,9 @@ export default class Account extends BaseEntity {
 
   @OneToOne((_type: any) => Bio, (bio: Bio) => bio.account)
   bio: Bio;
+
+  @OneToMany((_type: any) => Course, (course: Course) => course.account)
+  course: Course;
 
   @BeforeInsert()
   addId() {

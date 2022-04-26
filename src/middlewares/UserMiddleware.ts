@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 
+import { Account } from '../db';
+
 import UserServices from '../services/UserServices';
 
 import Hash from '../util/Hash';
-
 import { respondWithWarning } from '../util/httpResponse';
 
 class UserMiddleware {
@@ -16,7 +17,9 @@ class UserMiddleware {
    */
   async findEmail(req: Request, res: Response, next: () => void) {
     try {
-      const user = await UserServices.findUserByEmail(req.body.email);
+      const user: Account | null = await UserServices.findUserByEmail(
+        req.body.email
+      );
       if (user) {
         return respondWithWarning(
           res,
@@ -31,9 +34,18 @@ class UserMiddleware {
     }
   }
 
+  /**
+   * findUser - used to check if user credentials matches saved record
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {object} req
+   */
   async findUser(req: Request, res: Response, next: () => void) {
     try {
-      const user = await UserServices.findUserByEmail(req.body.email);
+      const user: Account | null = await UserServices.findUserByEmail(
+        req.body.email
+      );
       if (!user) {
         return respondWithWarning(
           res,
@@ -62,6 +74,32 @@ class UserMiddleware {
 
       req.user = data;
       return next();
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  /**
+   * findRole - used to check authorization on user role
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns next if authorized or forbidden if not
+   */
+  async findRole(req: Request, res: Response, next: () => void) {
+    try {
+      const { user: id } = req;
+      const account: Account | null = await UserServices.findUserById(id);
+      if (account) {
+        const { role } = account;
+        if (role === 'mentor') {
+          return next();
+        } else {
+          respondWithWarning(res, 403, 'forbidden', {});
+        }
+      } else {
+        respondWithWarning(res, 403, 'forbidden', {});
+      }
     } catch (error: any) {
       throw new Error(error);
     }

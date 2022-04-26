@@ -1,4 +1,4 @@
-import { Account, Bio, Profile } from '../db';
+import { Account, Bio, Profile, Course } from '../db';
 import { UserRole } from '../db/entity/Account';
 
 import { AppDataSource } from '../index';
@@ -171,6 +171,33 @@ class UserServices {
       return profile;
     } catch (error) {
       throw new Error('An error occurred while updating user');
+    }
+  }
+
+  /**
+   * addCourse - used to add new course
+   * @param {object} payload
+   * @param {string} id
+   * @returns {object}
+   */
+  async addCourse(
+    payload: { video_url: string[]; course_name: string; price: string },
+    id: Express.User | undefined
+  ) {
+    const { video_url, course_name, price } = payload;
+
+    try {
+      const newCourse: Course = AppDataSource.manager.create(Course, {
+        price,
+        account: id,
+        name: course_name,
+        video: video_url,
+        count: 0,
+      });
+      await AppDataSource.manager.save(newCourse);
+      return newCourse;
+    } catch (error) {
+      throw error;
     }
   }
 }
