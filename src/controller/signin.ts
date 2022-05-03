@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import winstonEnvLogger from 'winston-env-logger';
 
-import { respondWithSuccess } from '../util/httpResponse';
+import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 import token from '../util/Token';
 
@@ -30,7 +30,7 @@ const signinController = (req: Request, res: Response) => {
     );
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
-    throw new Error(error);
+    respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 

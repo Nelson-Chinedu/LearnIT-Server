@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import winstonEnvLogger from 'winston-env-logger';
 
-import { respondWithSuccess } from '../util/httpResponse';
+import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 import UserServices from '../services/UserServices';
 
@@ -17,7 +17,7 @@ const addCourse = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
-    throw new Error(error);
+    respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 

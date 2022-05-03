@@ -6,7 +6,7 @@ import token from '../util/Token';
 
 import UserServices from '../services/UserServices';
 
-import { respondWithSuccess } from '../util/httpResponse';
+import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 const signupController = async (req: Request, res: Response) => {
   const hashedPassword = await hash.hashPassword(req.body.password);
@@ -40,7 +40,7 @@ const signupController = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occurred', error });
-    throw new Error(error);
+    respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 

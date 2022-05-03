@@ -27,7 +27,7 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
-    throw new Error(error);
+    respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 

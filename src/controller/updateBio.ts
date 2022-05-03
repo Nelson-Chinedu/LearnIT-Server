@@ -12,8 +12,6 @@ const updateBio = async (req: Request, res: Response): Promise<void> => {
     const { user: id } = req;
     const user: Account | null = await UserServices.findUserById(id);
 
-    if (!user) respondWithWarning(res, 401, 'unauthorized', {});
-
     if (user) {
       const {
         profile: { account },
@@ -27,7 +25,7 @@ const updateBio = async (req: Request, res: Response): Promise<void> => {
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
-    throw new Error(error);
+    respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 
