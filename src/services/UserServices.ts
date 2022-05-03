@@ -200,6 +200,24 @@ class UserServices {
       throw error;
     }
   }
+
+  /**
+   * getCourses - used to get list of added course
+   * @param {string} id
+   * @returns {array} list of added course
+   */
+  async getCourses(id: Express.User | undefined) {
+    try {
+      const courses = await AppDataSource.manager
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .where('course.account = :id', { id })
+        .getMany();
+      return courses;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserServices();

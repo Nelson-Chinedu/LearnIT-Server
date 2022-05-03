@@ -1,34 +1,27 @@
 import { Request, Response } from 'express';
 import winstonEnvLogger from 'winston-env-logger';
 
-import { Account } from '../db';
+import { Account, Course } from '../db';
 
 import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
-const updateBio = async (req: Request, res: Response): Promise<void> => {
+const getAllCourse = async (req: Request, res: Response) => {
   try {
     const { user: id } = req;
+
     const user: Account | null = await UserServices.findUserById(id);
 
     if (!user) respondWithWarning(res, 401, 'unauthorized', {});
 
-    if (user) {
-      const {
-        profile: { account },
-      } = user;
+    const courses: Course[] = await UserServices.getCourses(id);
 
-      const data: object = await UserServices.updateBio(account.id, req.body);
-
-      if (data) {
-        respondWithSuccess(res, 204, 'Bio updated successfully', {});
-      }
-    }
+    respondWithSuccess(res, 200, 'successfull', courses);
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
     throw new Error(error);
   }
 };
 
-export default updateBio;
+export default getAllCourse;

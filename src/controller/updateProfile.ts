@@ -22,7 +22,7 @@ const updateProfile = async (req: Request, res: Response): Promise<void> => {
       );
 
       if (data) {
-        respondWithSuccess(res, 204, '', {});
+        respondWithSuccess(res, 204, 'Profile updated successfully', {});
       }
     }
   } catch (error: any) {
