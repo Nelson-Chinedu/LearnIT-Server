@@ -13,6 +13,7 @@ import courseValidator from '../../validation/course';
 import UserMiddleware from '../../middlewares/UserMiddleware';
 import videoUpload from '../../controller/videoUpload';
 import getAllCourse from '../../controller/getAllCourse';
+import getBioController from '../../controller/getBio';
 
 const router = express.Router();
 
@@ -100,9 +101,42 @@ router.put('/user/me', authentication, profileValidator, updateProfile);
  *        description: unauthorized
  *      400:
  *        description: bad request
+ *      403:
+ *        description: forbidden
  *
  */
-router.put('/user/me/bio', authentication, mentorBioValidator, updateBio);
+router.put(
+  '/user/me/bio',
+  authentication,
+  UserMiddleware.findRole,
+  mentorBioValidator,
+  updateBio
+);
+
+/**
+ * @swagger
+ *  /user/me/bio:
+ *    get:
+ *      summary: user bio
+ *      description: get user bio
+ *      tags:
+ *        - Users
+ *      responses:
+ *        200:
+ *          description: user bio
+ *        403:
+ *          description: forbidden
+ *        401:
+ *          description: unauthorized
+ *        400:
+ *          description: error
+ */
+router.get(
+  '/user/me/bio',
+  authentication,
+  UserMiddleware.findRole,
+  getBioController
+);
 
 /**
  * @swagger

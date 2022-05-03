@@ -20,7 +20,6 @@ const getProfileController = async (
 
     if (user) {
       const {
-        bio: { mentorBio },
         profile: {
           account: { email, role },
           ...rest
@@ -30,13 +29,13 @@ const getProfileController = async (
       respondWithSuccess(res, 200, 'User details', {
         email,
         role,
-        mentorBio,
+        // mentorBio,
         ...rest,
       });
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
-    throw new Error(error);
+    respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 

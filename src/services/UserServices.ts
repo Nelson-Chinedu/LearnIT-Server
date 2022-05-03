@@ -84,7 +84,7 @@ class UserServices {
         .getRepository(Account)
         .findOne({
           where: { id },
-          relations: ['profile', 'bio'],
+          relations: ['profile'],
         });
 
       return user;
@@ -142,6 +142,25 @@ class UserServices {
       return profile;
     } catch (error) {
       throw new Error('An error occurred while updating user');
+    }
+  }
+
+  /**
+   * getBio - Get user (mentor) bio
+   * @param {string} id
+   * @returns {object}
+   */
+  async getBio(id: Express.User | undefined) {
+    try {
+      const bio = await AppDataSource.manager
+        .getRepository(Bio)
+        .createQueryBuilder('bio')
+        .where('bio.account = :id', { id })
+        .getOne();
+
+      return bio;
+    } catch (error) {
+      throw new Error('An error occurred while fetching bio');
     }
   }
 
