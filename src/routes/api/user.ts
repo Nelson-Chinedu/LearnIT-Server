@@ -12,6 +12,7 @@ import mentorBioValidator from '../../validation/mentorBio';
 import courseValidator from '../../validation/course';
 import UserMiddleware from '../../middlewares/UserMiddleware';
 import videoUpload from '../../controller/videoUpload';
+import getAllCourse from '../../controller/getAllCourse';
 
 const router = express.Router();
 
@@ -202,6 +203,28 @@ router.post(
   UserMiddleware.findRole,
   courseValidator,
   addCourse
+);
+
+/**
+ * @swagger
+ *
+ * /course/all:
+ *  get:
+ *    summary: User course
+ *    description: Get user list of course
+ *    tags:
+ *      - Users
+ *    responses:
+ *      200:
+ *        description: User course
+ *      401:
+ *        description: unauthorized
+ */
+router.get(
+  '/course/all',
+  authentication,
+  UserMiddleware.findRole,
+  getAllCourse
 );
 
 export default router;
