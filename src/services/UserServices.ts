@@ -257,6 +257,7 @@ class UserServices {
       const categories: Category[] = await AppDataSource.manager
         .getRepository(Category)
         .createQueryBuilder('category')
+        .leftJoinAndSelect('category.resource', 'resource')
         .where('category.account = :id', { id })
         .getMany();
 
