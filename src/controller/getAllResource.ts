@@ -12,7 +12,7 @@ const getAllResource = async (req: Request, res: Response) => {
     const { user: id } = req;
     const payload = {
       accountId: id,
-      categoryId: req.body.category,
+      categoryId: req.query.category,
     };
 
     const user: Account | null = await UserServices.findUserById(id);
