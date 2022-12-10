@@ -14,6 +14,10 @@ import UserMiddleware from '../../middlewares/UserMiddleware';
 import videoUpload from '../../controller/videoUpload';
 import getAllCourse from '../../controller/getAllCourse';
 import getBioController from '../../controller/getBio';
+import addCategory from '../../controller/addCategory';
+import getAllCategory from '../../controller/getAllCategory';
+import addResource from '../../controller/addResource';
+import getAllResource from '../../controller/getAllResource';
 
 const router = express.Router();
 
@@ -260,5 +264,28 @@ router.get(
   UserMiddleware.findRole,
   getAllCourse
 );
+
+router.post('/category', authentication, addCategory);
+
+router.get('/category/all', authentication, getAllCategory);
+
+router.post('/resource', authentication, addResource);
+
+/**
+ * @swagger
+ *
+ * /resource/all:
+ *  get:
+ *    summary: User resource on category
+ *    description: Get list of category resource
+ *    tags:
+ *      - Users
+ *    responses:
+ *      200:
+ *        description: User resource
+ *      401:
+ *        description: unauthorized
+ */
+router.get('/resource/all', authentication, getAllResource);
 
 export default router;

@@ -6,6 +6,7 @@ import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
+// @ts-ignore
 import winstonEnvLogger from 'winston-env-logger';
 
 import router from './routes';
