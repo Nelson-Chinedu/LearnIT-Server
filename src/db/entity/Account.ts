@@ -13,6 +13,8 @@ import {
 import Profile from './Profile';
 import Bio from './Bio';
 import Course from './Course';
+import Resource from './Resource';
+import Category from './Category';
 
 export enum UserRole {
   MENTOR = 'mentor',
@@ -53,6 +55,12 @@ export default class Account extends BaseEntity {
 
   @OneToMany((_type: any) => Course, (course: Course) => course.account)
   course: Course;
+
+  @OneToMany((_type: any) => Category, (category: Category) => category.account)
+  category: Category;
+
+  @OneToMany((_type: any) => Resource, (resource: Resource) => resource.account)
+  resource: Resource;
 
   @BeforeInsert()
   addId() {

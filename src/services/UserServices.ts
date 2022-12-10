@@ -1,4 +1,4 @@
-import { Account, Bio, Profile, Course } from '../db';
+import { Account, Bio, Profile, Course, Category, Resource } from '../db';
 import { UserRole } from '../db/entity/Account';
 
 import { AppDataSource } from '../index';
@@ -201,7 +201,7 @@ class UserServices {
    */
   async addCourse(
     payload: { video_url: string[]; course_name: string; price: string },
-    id: Express.User | undefined
+    id: any
   ) {
     const { video_url, course_name, price } = payload;
 
@@ -227,12 +227,73 @@ class UserServices {
    */
   async getCourses(id: Express.User | undefined) {
     try {
-      const courses = await AppDataSource.manager
+      const courses: Course[] = await AppDataSource.manager
         .getRepository(Course)
         .createQueryBuilder('course')
         .where('course.account = :id', { id })
         .getMany();
       return courses;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addCategory(payload: any) {
+    const { name, id } = payload;
+    try {
+      const newCategory: Category = AppDataSource.manager.create(Category, {
+        name,
+        account: id,
+      });
+      await AppDataSource.manager.save(newCategory);
+      return newCategory;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCategories(id: Express.User | undefined) {
+    try {
+      const categories: Category[] = await AppDataSource.manager
+        .getRepository(Category)
+        .createQueryBuilder('category')
+        .where('category.account = :id', { id })
+        .getMany();
+
+      return categories;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async addResource(payload: any) {
+    const { name, url, accountId, categoryId } = payload;
+    try {
+      const newResource: Resource = AppDataSource.manager.create(Resource, {
+        name,
+        url,
+        account: accountId,
+        category: categoryId,
+      });
+      await AppDataSource.manager.save(newResource);
+      return newResource;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getResources(payload: any) {
+    const { accountId, categoryId } = payload;
+    try {
+      const resources: Resource[] = await AppDataSource.manager
+        .getRepository(Resource)
+        .createQueryBuilder('resource')
+        .where('resource.account = :accountId', { accountId })
+        .andWhere('resource.category = :categoryId', {
+          categoryId,
+        })
+        .getMany();
+      return resources;
     } catch (error) {
       throw error;
     }
