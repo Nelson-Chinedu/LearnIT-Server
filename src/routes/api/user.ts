@@ -12,12 +12,13 @@ import mentorBioValidator from '../../validation/mentorBio';
 import courseValidator from '../../validation/course';
 import UserMiddleware from '../../middlewares/UserMiddleware';
 import videoUpload from '../../controller/videoUpload';
-import getAllCourse from '../../controller/getAllCourse';
+import getAllCourses from '../../controller/getAllCourses';
 import getBioController from '../../controller/getBio';
 import addCategory from '../../controller/addCategory';
 import getAllCategory from '../../controller/getAllCategory';
 import addResource from '../../controller/addResource';
 import getAllResource from '../../controller/getAllResource';
+import getCourses from '../../controller/getCourses';
 
 const router = express.Router();
 
@@ -246,7 +247,7 @@ router.post(
 /**
  * @swagger
  *
- * /course/all:
+ * /courses:
  *  get:
  *    summary: User course
  *    description: Get user list of course
@@ -258,12 +259,7 @@ router.post(
  *      401:
  *        description: unauthorized
  */
-router.get(
-  '/course/all',
-  authentication,
-  UserMiddleware.findRole,
-  getAllCourse
-);
+router.get('/courses', authentication, UserMiddleware.findRole, getCourses);
 
 router.post('/category', authentication, addCategory);
 
@@ -287,5 +283,22 @@ router.post('/resource', authentication, addResource);
  *        description: unauthorized
  */
 router.get('/resource/all', authentication, getAllResource);
+
+/**
+ * @swagger
+ *
+ * /course:
+ *  get:
+ *    summary:  course
+ *    description: Get all list of courses
+ *    tags:
+ *      - Users
+ *    responses:
+ *      200:
+ *        description: User course
+ *      404:
+ *        description: not found
+ */
+router.get('/courses/all', getAllCourses);
 
 export default router;

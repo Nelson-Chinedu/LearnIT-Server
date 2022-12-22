@@ -11,6 +11,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import Account from './Account';
+import Profile from './Profile';
 
 @Entity('Course')
 export default class Course extends BaseEntity {
@@ -41,6 +42,12 @@ export default class Course extends BaseEntity {
   })
   @JoinColumn()
   account: Account;
+
+  @ManyToOne((_type: any) => Profile, (profile: Profile) => profile.course, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  profile: Profile;
 
   @BeforeInsert()
   addId() {
