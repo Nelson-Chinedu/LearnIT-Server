@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 
 import Account from './Account';
+import Course from './Course';
 @Entity('Profile')
 export default class Profile extends BaseEntity {
   @PrimaryColumn('uuid')
@@ -53,6 +54,11 @@ export default class Profile extends BaseEntity {
   })
   @JoinColumn()
   account: Account;
+
+  @OneToOne((_type: any) => Course, (course: Course) => course.profile, {
+    onDelete: 'CASCADE',
+  })
+  course: Course;
 
   @BeforeInsert()
   addId() {

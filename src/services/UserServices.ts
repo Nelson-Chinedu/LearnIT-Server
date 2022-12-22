@@ -201,14 +201,20 @@ class UserServices {
    */
   async addCourse(
     payload: { video_url: string[]; course_name: string; price: string },
-    id: any
+    id: Express.User | undefined
   ) {
     const { video_url, course_name, price } = payload;
 
+    const profileID = await AppDataSource.manager
+      .getRepository(Profile)
+      .createQueryBuilder('profile')
+      .where('profile.account = :id', { id })
+      .getOne();
     try {
       const newCourse: Course = AppDataSource.manager.create(Course, {
         price,
         account: id,
+        profile: profileID?.id as any,
         name: course_name,
         video: video_url,
         count: 0,
@@ -221,9 +227,9 @@ class UserServices {
   }
 
   /**
-   * getCourses - used to get list of added course
+   * getCourses - used to get mentor list of added course
    * @param {string} id
-   * @returns {array} list of added course
+   * @returns {array} list of mentor added course
    */
   async getCourses(id: Express.User | undefined) {
     try {
@@ -231,6 +237,23 @@ class UserServices {
         .getRepository(Course)
         .createQueryBuilder('course')
         .where('course.account = :id', { id })
+        .getMany();
+      return courses;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * getAllCourses - used to get all list of added course
+   * @returns {array} list of all added course
+   */
+  async getAllCourses() {
+    try {
+      const courses: Course[] = await AppDataSource.manager
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .leftJoinAndSelect('course.profile', 'profile')
         .getMany();
       return courses;
     } catch (error) {

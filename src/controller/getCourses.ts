@@ -7,7 +7,7 @@ import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
-const getAllCourse = async (req: Request, res: Response) => {
+const getCourses = async (req: Request, res: Response) => {
   try {
     const { user: id } = req;
 
@@ -24,4 +24,4 @@ const getAllCourse = async (req: Request, res: Response) => {
   }
 };
 
-export default getAllCourse;
+export default getCourses;
