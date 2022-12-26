@@ -42,6 +42,9 @@ export default class Profile extends BaseEntity {
   @Column('varchar')
   country: string;
 
+  @Column('varchar', { default: '' })
+  picture: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
