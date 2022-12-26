@@ -29,10 +29,11 @@ const imageUpload = (req: any, res: Response) => {
         req?.file?.path,
         {
           resource_type: 'image',
-          public_id: `LearnIT/${assetName}`,
+          public_id: `${assetName}`,
           height: 64,
           width: 64,
           crop: 'fill',
+          folder: 'LearnIT/pictures',
         }
       );
 
