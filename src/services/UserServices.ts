@@ -1,3 +1,4 @@
+import { UpdateResult } from 'typeorm';
 import { Account, Bio, Profile, Course, Category, Resource } from '../db';
 import { UserRole } from '../db/entity/Account';
 
@@ -178,7 +179,7 @@ class UserServices {
   ) {
     const { mentorBio } = data;
     try {
-      const profile: any = await AppDataSource.manager
+      const profile: UpdateResult = await AppDataSource.manager
         .createQueryBuilder()
         .update(Bio)
         .set({
@@ -318,6 +319,22 @@ class UserServices {
         })
         .getMany();
       return resources;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProfilePicture(id: Express.User | undefined, url: string) {
+    try {
+      const profile: UpdateResult = await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Profile)
+        .set({
+          picture: url,
+        })
+        .where('account.id = :id', { id })
+        .execute();
+      return profile;
     } catch (error) {
       throw error;
     }

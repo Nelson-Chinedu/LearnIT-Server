@@ -4,13 +4,7 @@ import getProfileController from '../../controller/getProfile';
 import updateBio from '../../controller/updateBio';
 import updateProfile from '../../controller/updateProfile';
 import addCourse from '../../controller/addCourse';
-
-import { authentication } from '../../middlewares/authentication';
-
-import profileValidator from '../../validation/profile';
-import mentorBioValidator from '../../validation/mentorBio';
-import courseValidator from '../../validation/course';
-import UserMiddleware from '../../middlewares/UserMiddleware';
+import getCourses from '../../controller/getCourses';
 import videoUpload from '../../controller/videoUpload';
 import getAllCourses from '../../controller/getAllCourses';
 import getBioController from '../../controller/getBio';
@@ -18,7 +12,14 @@ import addCategory from '../../controller/addCategory';
 import getAllCategory from '../../controller/getAllCategory';
 import addResource from '../../controller/addResource';
 import getAllResource from '../../controller/getAllResource';
-import getCourses from '../../controller/getCourses';
+import imageUpload from '../../controller/imageUpload';
+
+import { authentication } from '../../middlewares/authentication';
+import UserMiddleware from '../../middlewares/UserMiddleware';
+
+import profileValidator from '../../validation/profile';
+import mentorBioValidator from '../../validation/mentorBio';
+import courseValidator from '../../validation/course';
 
 const router = express.Router();
 
@@ -300,5 +301,7 @@ router.get('/resource/all', authentication, getAllResource);
  *        description: not found
  */
 router.get('/courses/all', getAllCourses);
+
+router.patch('/user/profile', authentication, imageUpload);
 
 export default router;
