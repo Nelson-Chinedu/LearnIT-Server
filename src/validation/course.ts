@@ -8,6 +8,10 @@ const schema = Joi.object({
     .min(1)
     .required()
     .messages({ 'array.min': 'Video cannot be empty' }),
+  course_thumbnail: Joi.string().required(),
+  course_preview: Joi.string().required(),
+  course_faq: Joi.string().required(),
+  course_objective: Joi.string().required(),
 });
 
 const courseValidator = (req: Request, res: Response, next: () => void) => {
