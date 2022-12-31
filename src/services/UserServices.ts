@@ -201,10 +201,26 @@ class UserServices {
    * @returns {object}
    */
   async addCourse(
-    payload: { video_url: string[]; course_name: string; price: string },
+    payload: {
+      video_url: string[];
+      course_name: string;
+      price: string;
+      course_faq: string;
+      course_objective: string;
+      course_thumbnail: string;
+      course_preview: string;
+    },
     id: Express.User | undefined
   ) {
-    const { video_url, course_name, price } = payload;
+    const {
+      video_url,
+      course_name,
+      price,
+      course_faq,
+      course_objective,
+      course_thumbnail,
+      course_preview,
+    } = payload;
 
     const profileID = await AppDataSource.manager
       .getRepository(Profile)
@@ -214,10 +230,14 @@ class UserServices {
     try {
       const newCourse: Course = AppDataSource.manager.create(Course, {
         price,
+        faq: JSON.stringify(course_faq),
+        objectives: JSON.stringify(course_objective),
         account: id,
         profile: profileID?.id as any,
         name: course_name,
         video: video_url,
+        thumbnail: course_thumbnail,
+        preview: course_preview,
         count: 0,
       });
       await AppDataSource.manager.save(newCourse);

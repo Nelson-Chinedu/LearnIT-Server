@@ -6,6 +6,7 @@ import updateProfile from '../../controller/updateProfile';
 import addCourse from '../../controller/addCourse';
 import getCourses from '../../controller/getCourses';
 import videoUpload from '../../controller/videoUpload';
+import thumbnailUpload from '../../controller/thumbnailUpload';
 import getAllCourses from '../../controller/getAllCourses';
 import getBioController from '../../controller/getBio';
 import addCategory from '../../controller/addCategory';
@@ -190,6 +191,13 @@ router.post(
   authentication,
   UserMiddleware.findRole,
   videoUpload
+);
+
+router.post(
+  '/upload/thumbnail',
+  authentication,
+  UserMiddleware.findRole,
+  thumbnailUpload
 );
 
 /**

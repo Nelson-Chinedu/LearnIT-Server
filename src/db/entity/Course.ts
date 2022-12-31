@@ -30,6 +30,18 @@ export default class Course extends BaseEntity {
   @Column('varchar', { array: true })
   video: string[];
 
+  @Column('varchar')
+  thumbnail: string;
+
+  @Column('varchar')
+  preview: string;
+
+  @Column('text')
+  objectives: string;
+
+  @Column('text')
+  faq: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

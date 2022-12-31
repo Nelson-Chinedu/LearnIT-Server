@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 import { respondWithWarning } from '../util/httpResponse';
 
@@ -17,18 +18,28 @@ export const authentication = (
   next: () => void
 ) => {
   const token = req.cookies;
-  if ('cid' in token) {
-    const data: any = Token.verifyToken(
-      token.cid,
-      process.env.VERIFICATION_JWT_kEY as string
-    );
-    if (data) {
-      req.user = data.id;
-      return next();
+  try {
+    if ('cid' in token) {
+      const data: any = Token.verifyToken(
+        token.cid,
+        process.env.VERIFICATION_JWT_kEY as string
+      );
+      if (data) {
+        req.user = data.id;
+        return next();
+      } else {
+        respondWithWarning(res, 401, 'unauthorized', {});
+      }
     } else {
       respondWithWarning(res, 401, 'unauthorized', {});
     }
-  } else {
-    respondWithWarning(res, 401, 'unauthorized', {});
+  } catch (error) {
+    // Check if JWT token has expired
+    if (
+      error instanceof jwt.JsonWebTokenError ||
+      error instanceof jwt.TokenExpiredError
+    ) {
+      respondWithWarning(res, 401, 'unauthorized', {});
+    }
   }
 };
