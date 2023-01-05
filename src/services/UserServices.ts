@@ -368,11 +368,27 @@ class UserServices {
     const { accountId, courseId } = payload;
     try {
       const course = AppDataSource.manager.create(Enroll, {
-        course: courseId,
+        courseId,
         account: accountId,
       });
       await AppDataSource.manager.save(course);
       return course;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getEnrolledCourse(id: Express.User | undefined) {
+    try {
+      const enrolledCourses = await AppDataSource.manager
+        .getRepository(Enroll)
+        .createQueryBuilder('enroll')
+        .leftJoinAndSelect('enroll.course', 'course')
+        .where('enroll.account = :accountId', {
+          accountId: id,
+        })
+        .getMany();
+      return enrolledCourses;
     } catch (error) {
       throw error;
     }

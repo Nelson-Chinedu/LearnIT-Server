@@ -11,6 +11,7 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import Account from './Account';
+import Course from './Course';
 
 @Entity('Enroll')
 export default class Enroll extends BaseEntity {
@@ -18,7 +19,7 @@ export default class Enroll extends BaseEntity {
   id: string;
 
   @Column('uuid')
-  course: string;
+  courseId: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -32,6 +33,13 @@ export default class Enroll extends BaseEntity {
   })
   @JoinColumn()
   account: Account;
+
+  @ManyToOne((_type: any) => Course, (course: Course) => course.enroll, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  course: Course;
 
   @BeforeInsert()
   addId() {

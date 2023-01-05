@@ -22,6 +22,7 @@ import UserMiddleware from '../../middlewares/UserMiddleware';
 import profileValidator from '../../validation/profile';
 import mentorBioValidator from '../../validation/mentorBio';
 import courseValidator from '../../validation/course';
+import getEnrolledCourse from '../../controller/getEnrolledCourse';
 
 const router = express.Router();
 
@@ -314,5 +315,7 @@ router.get('/courses/all', getAllCourses);
 router.patch('/user/profile', authentication, imageUpload);
 
 router.post('/course/enroll', authentication, enrollCourse);
+
+router.get('/course/enroll', authentication, getEnrolledCourse);
 
 export default router;
