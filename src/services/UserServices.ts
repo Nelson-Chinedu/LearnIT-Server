@@ -1,6 +1,7 @@
 import { UpdateResult } from 'typeorm';
 import { Account, Bio, Profile, Course, Category, Resource } from '../db';
 import { UserRole } from '../db/entity/Account';
+import Enroll from '../db/entity/Enroll';
 
 import { AppDataSource } from '../index';
 
@@ -355,6 +356,23 @@ class UserServices {
         .where('account.id = :id', { id })
         .execute();
       return profile;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async enrollCourse(payload: {
+    accountId: Express.User | undefined;
+    courseId: string;
+  }) {
+    const { accountId, courseId } = payload;
+    try {
+      const course = AppDataSource.manager.create(Enroll, {
+        course: courseId,
+        account: accountId,
+      });
+      await AppDataSource.manager.save(course);
+      return course;
     } catch (error) {
       throw error;
     }

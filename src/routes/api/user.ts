@@ -14,6 +14,7 @@ import getAllCategory from '../../controller/getAllCategory';
 import addResource from '../../controller/addResource';
 import getAllResource from '../../controller/getAllResource';
 import imageUpload from '../../controller/imageUpload';
+import enrollCourse from '../../controller/enrollCourse';
 
 import { authentication } from '../../middlewares/authentication';
 import UserMiddleware from '../../middlewares/UserMiddleware';
@@ -311,5 +312,7 @@ router.get('/resource/all', authentication, getAllResource);
 router.get('/courses/all', getAllCourses);
 
 router.patch('/user/profile', authentication, imageUpload);
+
+router.post('/course/enroll', authentication, enrollCourse);
 
 export default router;
