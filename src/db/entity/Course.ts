@@ -9,9 +9,11 @@ import {
   BeforeInsert,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import Account from './Account';
 import Profile from './Profile';
+import Enroll from './Enroll';
 
 @Entity('Course')
 export default class Course extends BaseEntity {
@@ -60,6 +62,9 @@ export default class Course extends BaseEntity {
   })
   @JoinColumn()
   profile: Profile;
+
+  @OneToMany((_type: any) => Enroll, (enroll: Enroll) => enroll.course)
+  enroll: Enroll;
 
   @BeforeInsert()
   addId() {
