@@ -5,7 +5,7 @@ import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
-const enrollCourse = async (req: Request, res: Response) => {
+const unenrollCourse = async (req: Request, res: Response) => {
   try {
     const {
       user,
@@ -16,12 +16,12 @@ const enrollCourse = async (req: Request, res: Response) => {
       courseId,
     };
 
-    const course = await UserServices.enrollCourse(payload);
-    respondWithSuccess(res, 201, 'Enrolled successfully', course);
+    const course = await UserServices.unenrollCourse(payload);
+    respondWithSuccess(res, 201, 'Unenrolled successfully', course);
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
     respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 
-export default enrollCourse;
+export default unenrollCourse;

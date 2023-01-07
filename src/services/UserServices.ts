@@ -384,11 +384,33 @@ class UserServices {
         .getRepository(Enroll)
         .createQueryBuilder('enroll')
         .leftJoinAndSelect('enroll.course', 'course')
+        .leftJoinAndSelect('course.profile', 'profile')
         .where('enroll.account = :accountId', {
           accountId: id,
         })
         .getMany();
       return enrolledCourses;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async unenrollCourse(payload: {
+    accountId: Express.User | undefined;
+    courseId: string | number;
+  }) {
+    const { accountId, courseId } = payload;
+
+    try {
+      const course = AppDataSource.manager
+        .getRepository(Enroll)
+        .createQueryBuilder('enroll')
+        .delete()
+        .where('courseId = :courseId', { courseId })
+        .andWhere('account = :accountId', { accountId })
+        .execute();
+
+      return course;
     } catch (error) {
       throw error;
     }
