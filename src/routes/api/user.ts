@@ -15,6 +15,8 @@ import addResource from '../../controller/addResource';
 import getAllResource from '../../controller/getAllResource';
 import imageUpload from '../../controller/imageUpload';
 import enrollCourse from '../../controller/enrollCourse';
+import getEnrolledCourse from '../../controller/getEnrolledCourse';
+import unenrollCourse from '../../controller/unEnrollCourse';
 
 import { authentication } from '../../middlewares/authentication';
 import UserMiddleware from '../../middlewares/UserMiddleware';
@@ -22,7 +24,6 @@ import UserMiddleware from '../../middlewares/UserMiddleware';
 import profileValidator from '../../validation/profile';
 import mentorBioValidator from '../../validation/mentorBio';
 import courseValidator from '../../validation/course';
-import getEnrolledCourse from '../../controller/getEnrolledCourse';
 
 const router = express.Router();
 
@@ -317,5 +318,7 @@ router.patch('/user/profile', authentication, imageUpload);
 router.post('/course/enroll', authentication, enrollCourse);
 
 router.get('/course/enroll', authentication, getEnrolledCourse);
+
+router.delete('/course/unenroll', authentication, unenrollCourse);
 
 export default router;
