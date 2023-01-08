@@ -26,12 +26,12 @@ const getEnrollCourseDetailController = async (req: Request, res: Response) => {
           id,
           name,
           price,
-          count,
           video,
           thumbnail,
           preview,
           objectives,
           faq,
+          profile: { firstname, lastname },
         },
       } = courseDetail;
 
@@ -39,13 +39,13 @@ const getEnrollCourseDetailController = async (req: Request, res: Response) => {
         id,
         name,
         price,
-        count,
         video,
         thumbnail,
         preview,
         objectives,
         faq,
-        courseDetail,
+        firstname,
+        lastname,
       });
     }
   } catch (error: any) {
