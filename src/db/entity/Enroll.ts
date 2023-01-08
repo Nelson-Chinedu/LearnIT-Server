@@ -3,7 +3,6 @@ import {
   Entity,
   BaseEntity,
   PrimaryColumn,
-  Column,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
@@ -18,16 +17,13 @@ export default class Enroll extends BaseEntity {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column('uuid')
-  courseId: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne((_type: any) => Account, (account: Account) => account.course, {
+  @ManyToOne((_type: any) => Account, (account: Account) => account.enroll, {
     eager: true,
     onDelete: 'CASCADE',
   })

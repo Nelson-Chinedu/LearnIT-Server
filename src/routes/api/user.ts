@@ -17,6 +17,7 @@ import imageUpload from '../../controller/imageUpload';
 import enrollCourse from '../../controller/enrollCourse';
 import getEnrolledCourse from '../../controller/getEnrolledCourse';
 import unenrollCourse from '../../controller/unEnrollCourse';
+import getEnrollCourseDetailController from '../../controller/getEnrollCourseDetail';
 
 import { authentication } from '../../middlewares/authentication';
 import UserMiddleware from '../../middlewares/UserMiddleware';
@@ -319,6 +320,12 @@ router.post('/course/enroll', authentication, enrollCourse);
 
 router.get('/course/enroll', authentication, getEnrolledCourse);
 
-router.delete('/course/unenroll', authentication, unenrollCourse);
+router.delete('/course/unenroll/:courseId', authentication, unenrollCourse);
+
+router.get(
+  '/course/enroll/:courseId',
+  authentication,
+  getEnrollCourseDetailController
+);
 
 export default router;

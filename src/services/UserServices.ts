@@ -363,13 +363,13 @@ class UserServices {
 
   async enrollCourse(payload: {
     accountId: Express.User | undefined;
-    courseId: string;
+    courseId: Express.User | undefined;
   }) {
     const { accountId, courseId } = payload;
     try {
       const course = AppDataSource.manager.create(Enroll, {
-        courseId,
         account: accountId,
+        course: courseId,
       });
       await AppDataSource.manager.save(course);
       return course;
@@ -406,9 +406,34 @@ class UserServices {
         .getRepository(Enroll)
         .createQueryBuilder('enroll')
         .delete()
-        .where('courseId = :courseId', { courseId })
+        .where('course = :courseId', { courseId })
         .andWhere('account = :accountId', { accountId })
         .execute();
+
+      return course;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * getEnrollCourseDetail - used to get the detail of a course enrolled
+   * @returns {object} course detail
+   */
+  async getEnrollCourseDetail(payload: {
+    accountId: Express.User | undefined;
+    courseId: string | number;
+  }) {
+    const { accountId, courseId } = payload;
+
+    try {
+      const course = AppDataSource.manager
+        .getRepository(Enroll)
+        .createQueryBuilder('enroll')
+        .leftJoinAndSelect('enroll.course', 'course')
+        .where('enroll.course = :courseId', { courseId })
+        .andWhere('enroll.account = :accountId', { accountId })
+        .getOne();
 
       return course;
     } catch (error) {

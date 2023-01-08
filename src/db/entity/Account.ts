@@ -10,11 +10,13 @@ import {
   OneToOne,
   OneToMany,
 } from 'typeorm';
+
 import Profile from './Profile';
 import Bio from './Bio';
 import Course from './Course';
 import Resource from './Resource';
 import Category from './Category';
+import Enroll from './Enroll';
 
 export enum UserRole {
   MENTOR = 'mentor',
@@ -61,6 +63,9 @@ export default class Account extends BaseEntity {
 
   @OneToMany((_type: any) => Resource, (resource: Resource) => resource.account)
   resource: Resource;
+
+  @OneToMany((_type: any) => Enroll, (enroll: Enroll) => enroll.account)
+  enroll: Enroll;
 
   @BeforeInsert()
   addId() {
