@@ -431,6 +431,7 @@ class UserServices {
         .getRepository(Enroll)
         .createQueryBuilder('enroll')
         .leftJoinAndSelect('enroll.course', 'course')
+        .leftJoinAndSelect('course.profile', 'profile')
         .where('enroll.course = :courseId', { courseId })
         .andWhere('enroll.account = :accountId', { accountId })
         .getOne();
