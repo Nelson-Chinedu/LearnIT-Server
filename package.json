@@ -24,7 +24,7 @@
     "dev": "cross-env NODE_ENV=development nodemon",
     "test-env": "cross-env NODE_ENV=test npm run build && node build/server.js",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "build": "rm -rf ./build && npm run build:js",
+    "build": "rm -rf ./build && yarn run build:js",
     "build:js": "babel src --out-dir build --extensions \".ts,.js\" --source-maps inline",
     "lint": "tslint --fix ./"
   },
