@@ -20,7 +20,7 @@
     "test": "NODE_ENV=test npm run build && nyc mocha -r dotenv/config --require @babel/register \"./build/tests/**/*.js\" --timeout 0 --exit || true",
     "pretest-travis": "NODE_ENV=test npm run migrate:undo && NODE_ENV=test npm run migrate",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "start": "cross-env NODE_ENV=production node build/server.js",
+    "start": "cross-env NODE_ENV=production npm run build && node build/server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "test-env": "cross-env NODE_ENV=test npm run build && node build/server.js",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
