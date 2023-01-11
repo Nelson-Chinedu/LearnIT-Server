@@ -12,8 +12,8 @@ let connString =
     : process.env.DB_TEST_URL;
 
 const getEnvVariables = {
-  logging: isDevEnv() || isTestEnv() ? true : false,
-  synchronize: isDevEnv() || isTestEnv() ? true : false,
+  logging: isDevEnv() || isTestEnv() ? true : true,
+  synchronize: isDevEnv() || isTestEnv() ? true : true,
 };
 
 const entities = isDevEnv()
