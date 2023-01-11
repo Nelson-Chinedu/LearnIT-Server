@@ -8,7 +8,7 @@ import userRoute from './user';
 const specs = swaggerJsDoc(swaggerDefinition);
 const router = express.Router();
 const prefix = '/api/v1';
-const apiDocs = '/api/docs';
+const apiDocs = '/api/v1/docs';
 const specsConfig = setup(specs, {
   explorer: false,
   customSiteTitle: 'LearnIT',

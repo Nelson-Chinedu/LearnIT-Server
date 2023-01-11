@@ -27,7 +27,11 @@ const options = {
     servers: [
       {
         url: `http://localhost:8080/api/v1`,
-        description: 'Local Host',
+        description: 'Dev',
+      },
+      {
+        url: `https://learnit-prod.onrender.com/api/v1`,
+        description: 'Test',
       },
     ],
   },
