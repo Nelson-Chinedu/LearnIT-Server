@@ -30,7 +30,8 @@ const signupController = async (req: Request, res: Response) => {
       return respondWithSuccess(
         res.cookie('cid', accessToken, {
           httpOnly: true,
-          // secure: process.env.NODE_ENV === 'production',
+          secure: process.env.NODE_ENV === 'production' ? true : false,
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : true,
           path: '/',
         }),
         201,
