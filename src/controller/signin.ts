@@ -21,7 +21,7 @@ const signinController = (req: Request, res: Response) => {
     return respondWithSuccess(
       res.cookie('cid', accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
         path: '/',
       }),
       200,
