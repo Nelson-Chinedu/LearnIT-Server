@@ -10,8 +10,9 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import Account from './Account';
+
 import Category from './Category';
+import Profile from './Profile';
 
 @Entity('Resource')
 export default class Resource extends BaseEntity {
@@ -41,12 +42,12 @@ export default class Resource extends BaseEntity {
   @JoinColumn()
   category: Category;
 
-  @ManyToOne((_type: any) => Account, (account: Account) => account.resource, {
+  @ManyToOne((_type: any) => Profile, (profile: Profile) => profile.resource, {
     eager: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  account: Account;
+  profile: Profile;
 
   @BeforeInsert()
   addId() {

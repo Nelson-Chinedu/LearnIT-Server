@@ -1,7 +1,14 @@
 import { UpdateResult } from 'typeorm';
-import { Account, Bio, Profile, Course, Category, Resource } from '../db';
+import {
+  Account,
+  Bio,
+  Profile,
+  Course,
+  Category,
+  Resource,
+  Enroll,
+} from '../db';
 import { UserRole } from '../db/entity/Account';
-import Enroll from '../db/entity/Enroll';
 
 import { AppDataSource } from '../index';
 
@@ -64,7 +71,7 @@ class UserServices {
       if (role === 'mentor') {
         const newBio: Bio = AppDataSource.manager.create(Bio, {
           mentorBio: '',
-          account: newAccount,
+          profile: newProfile,
         });
         await AppDataSource.manager.save(newBio);
       }
@@ -157,7 +164,7 @@ class UserServices {
       const bio = await AppDataSource.manager
         .getRepository(Bio)
         .createQueryBuilder('bio')
-        .where('bio.account = :id', { id })
+        .where('bio.profile = :id', { id })
         .getOne();
 
       return bio;
@@ -186,7 +193,7 @@ class UserServices {
         .set({
           mentorBio,
         })
-        .where('account.id = :id', { id })
+        .where('profile.id = :id', { id })
         .execute();
 
       return profile;
@@ -258,7 +265,7 @@ class UserServices {
       const courses: Course[] = await AppDataSource.manager
         .getRepository(Course)
         .createQueryBuilder('course')
-        .where('course.account = :id', { id })
+        .where('course.profile = :id', { id })
         .getMany();
       return courses;
     } catch (error) {
@@ -288,7 +295,7 @@ class UserServices {
     try {
       const newCategory: Category = AppDataSource.manager.create(Category, {
         name,
-        account: id,
+        profile: id,
       });
       await AppDataSource.manager.save(newCategory);
       return newCategory;
@@ -303,7 +310,7 @@ class UserServices {
         .getRepository(Category)
         .createQueryBuilder('category')
         .leftJoinAndSelect('category.resource', 'resource')
-        .where('category.account = :id', { id })
+        .where('category.profile = :id', { id })
         .getMany();
 
       return categories;
@@ -313,12 +320,13 @@ class UserServices {
   }
 
   async addResource(payload: any) {
-    const { name, url, accountId, categoryId } = payload;
+    const { name, url, id, categoryId } = payload;
+
     try {
       const newResource: Resource = AppDataSource.manager.create(Resource, {
         name,
         url,
-        account: accountId,
+        profile: id,
         category: categoryId,
       });
       await AppDataSource.manager.save(newResource);
@@ -329,15 +337,28 @@ class UserServices {
   }
 
   async getResources(payload: any) {
-    const { accountId, categoryId } = payload;
+    const { id, categoryId } = payload;
     try {
       const resources: Resource[] = await AppDataSource.manager
         .getRepository(Resource)
         .createQueryBuilder('resource')
-        .where('resource.account = :accountId', { accountId })
+        .where('resource.profile = :id', { id })
         .andWhere('resource.category = :categoryId', {
           categoryId,
         })
+        .getMany();
+      return resources;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllResources(id: Express.User | string) {
+    try {
+      const resources: Resource[] = await AppDataSource.manager
+        .getRepository(Resource)
+        .createQueryBuilder('resource')
+        .where('resource.profile = :id', { id })
         .getMany();
       return resources;
     } catch (error) {
@@ -353,7 +374,7 @@ class UserServices {
         .set({
           picture: url,
         })
-        .where('account.id = :id', { id })
+        .where('id = :id', { id })
         .execute();
       return profile;
     } catch (error) {
@@ -362,17 +383,17 @@ class UserServices {
   }
 
   async enrollCourse(payload: {
-    accountId: Express.User | undefined;
+    id: Express.User | undefined;
     courseId: Express.User | undefined;
   }) {
-    const { accountId, courseId } = payload;
+    const { id, courseId } = payload;
     try {
-      const course = AppDataSource.manager.create(Enroll, {
-        account: accountId,
+      const enroll = AppDataSource.manager.create(Enroll, {
+        profile: id,
         course: courseId,
       });
-      await AppDataSource.manager.save(course);
-      return course;
+      await AppDataSource.manager.save(enroll);
+      return enroll;
     } catch (error) {
       throw error;
     }
@@ -385,8 +406,8 @@ class UserServices {
         .createQueryBuilder('enroll')
         .leftJoinAndSelect('enroll.course', 'course')
         .leftJoinAndSelect('course.profile', 'profile')
-        .where('enroll.account = :accountId', {
-          accountId: id,
+        .where('enroll.profile = :profileId', {
+          profileId: id,
         })
         .getMany();
       return enrolledCourses;
@@ -396,10 +417,10 @@ class UserServices {
   }
 
   async unenrollCourse(payload: {
-    accountId: Express.User | undefined;
+    id: Express.User | undefined;
     courseId: string | number;
   }) {
-    const { accountId, courseId } = payload;
+    const { id, courseId } = payload;
 
     try {
       const course = AppDataSource.manager
@@ -407,7 +428,7 @@ class UserServices {
         .createQueryBuilder('enroll')
         .delete()
         .where('course = :courseId', { courseId })
-        .andWhere('account = :accountId', { accountId })
+        .andWhere('profile = :profileId', { profileId: id })
         .execute();
 
       return course;
@@ -421,10 +442,10 @@ class UserServices {
    * @returns {object} course detail
    */
   async getEnrollCourseDetail(payload: {
-    accountId: Express.User | undefined;
+    id: Express.User | undefined;
     courseId: string | number;
   }) {
-    const { accountId, courseId } = payload;
+    const { id, courseId } = payload;
 
     try {
       const course = AppDataSource.manager
@@ -433,7 +454,7 @@ class UserServices {
         .leftJoinAndSelect('enroll.course', 'course')
         .leftJoinAndSelect('course.profile', 'profile')
         .where('enroll.course = :courseId', { courseId })
-        .andWhere('enroll.account = :accountId', { accountId })
+        .andWhere('enroll.profile = :id', { id })
         .getOne();
 
       return course;

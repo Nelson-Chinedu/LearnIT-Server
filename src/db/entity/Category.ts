@@ -11,8 +11,9 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import Account from './Account';
+
 import Resource from './Resource';
+import Profile from './Profile';
 
 @Entity('Category')
 export default class Category extends BaseEntity {
@@ -34,12 +35,12 @@ export default class Category extends BaseEntity {
   )
   resource: Resource;
 
-  @ManyToOne((_type: any) => Account, (account: Account) => account.category, {
+  @ManyToOne((_type: any) => Profile, (profile: Profile) => profile.category, {
     eager: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  account: Account;
+  profile: Profile;
 
   @BeforeInsert()
   addId() {

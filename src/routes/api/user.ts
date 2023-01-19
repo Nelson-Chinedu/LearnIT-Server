@@ -1,123 +1,95 @@
 import express from 'express';
 
-import getProfileController from '../../controller/getProfile';
 import updateBio from '../../controller/updateBio';
 import updateProfile from '../../controller/updateProfile';
-import addCourse from '../../controller/addCourse';
-import getCourses from '../../controller/getCourses';
-import videoUpload from '../../controller/videoUpload';
-import thumbnailUpload from '../../controller/thumbnailUpload';
-import getAllCourses from '../../controller/getAllCourses';
 import getBioController from '../../controller/getBio';
-import addCategory from '../../controller/addCategory';
-import getAllCategory from '../../controller/getAllCategory';
-import addResource from '../../controller/addResource';
-import getAllResource from '../../controller/getAllResource';
 import imageUpload from '../../controller/imageUpload';
-import enrollCourse from '../../controller/enrollCourse';
-import getEnrolledCourse from '../../controller/getEnrolledCourse';
-import unenrollCourse from '../../controller/unEnrollCourse';
-import getEnrollCourseDetailController from '../../controller/getEnrollCourseDetail';
 
 import { authentication } from '../../middlewares/authentication';
 import UserMiddleware from '../../middlewares/UserMiddleware';
 
 import profileValidator from '../../validation/profile';
 import mentorBioValidator from '../../validation/mentorBio';
-import courseValidator from '../../validation/course';
 
 const router = express.Router();
 
 /**
  * @swagger
  *
- * /user/me:
- *  get:
- *    summary: User profile
- *    description: Get user profile
- *    tags:
- *      - Users
- *    responses:
- *      200:
- *        description: user profile
- *      401:
- *        description: unauthorized
+ *  paths:
+ *    /users/{id}/:
+ *      put:
+ *        tags:
+ *          - users
+ *        description: update user profile
+ *        summary: Update an existing user detail with user ID
+ *        parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *              format: uuid
+ *            required: true
+ *            description: user ID
+ *        requestBody:
+ *          required: true
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/BasicUser'
+ *            application/x-www-form-urlencoded:
+ *              schema:
+ *                $ref: '#/components/schemas/BasicUser'
+ *        responses:
+ *          204:
+ *            description: Profile updated successfully
+ *          400:
+ *            description: Bad Request
+ *          401:
+ *            description: Unauthorized
  */
-router.get('/user/me', authentication, getProfileController);
+router.put('/users/:id/', authentication, profileValidator, updateProfile);
 
 /**
  * @swagger
  *
- * /user/me:
- *  put:
- *    summary: User profile
- *    description: Update user profile
- *    tags:
- *      - Users
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              firstname:
- *                type: string
- *              lastname:
- *                 type: string
- *              phone:
- *                 type: string
- *              city:
- *                 type: string
- *              state:
- *                 type: string
- *              zipCode:
- *                 type: string
- *              address:
- *                 type: string
- *              country:
- *                 type: string
- *    responses:
- *      204:
- *        description: successfull
- *      401:
- *        description: unauthorized
- *      400:
- *        description: bad request
- */
-router.put('/user/me', authentication, profileValidator, updateProfile);
-
-/**
- * @swagger
- *
- * /user/me/bio:
- *  put:
- *    summary: User bio
- *    description: update user bio
- *    tags:
- *      - Users
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              mentorBio:
- *                type: string
- *    responses:
- *      204:
- *        description: successfull
- *      401:
- *        description: unauthorized
- *      400:
- *        description: bad request
- *      403:
- *        description: forbidden
+ *  paths:
+ *    /users/{id}/bio/:
+ *      put:
+ *        tags:
+ *          - users
+ *        description: Update user (Mentor) bio
+ *        summary: Update an existing user (Mentor) bio description using user ID
+ *        parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *              format: uuid
+ *            required: true
+ *            description: user ID
+ *        requestBody:
+ *          required: true
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Bio'
+ *            application/x-www-form-urlencoded:
+ *              schema:
+ *                $ref: '#/components/schemas/Bio'
+ *        responses:
+ *          204:
+ *            description: Bio updated successfully
+ *          400:
+ *            description: Bad request
+ *          401:
+ *            description: Unauthorized
+ *          403:
+ *            description: Forbidden
  *
  */
 router.put(
-  '/user/me/bio',
+  '/users/:id/bio/',
   authentication,
   UserMiddleware.findRole,
   mentorBioValidator,
@@ -126,24 +98,60 @@ router.put(
 
 /**
  * @swagger
- *  /user/me/bio:
- *    get:
- *      summary: user bio
- *      description: get user bio
- *      tags:
- *        - Users
- *      responses:
- *        200:
- *          description: user bio
- *        403:
- *          description: forbidden
- *        401:
- *          description: unauthorized
- *        400:
- *          description: error
+ *
+ *  paths:
+ *    /users/{id}/bio:
+ *      get:
+ *        tags:
+ *          - users
+ *        description: User (Mentor) bio detail
+ *        summary: Fetch existing user (Mentor) bio description using user ID
+ *        parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *              format: uuid
+ *            required: true
+ *            description: User ID
+ *        responses:
+ *          200:
+ *            description: Successful
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    status:
+ *                      type: number
+ *                      default: 200
+ *                    message:
+ *                      type: string
+ *                      default: Bio detail
+ *                    payload:
+ *                      type: object
+ *                      properties:
+ *                        bio:
+ *                          type: object
+ *                          properties:
+ *                            id:
+ *                              type: string
+ *                              default: 8d78926c-dc5a-42ab-b860-509e8d805944
+ *                            mentorBio:
+ *                              type: string
+ *                              default: Lorem ipsum dolor
+ *          400:
+ *            description: Bad request
+ *          401:
+ *            description: Unauthorized
+ *          403:
+ *            description: Forbidden
+ *          404:
+ *            description: Not found
+ *
  */
 router.get(
-  '/user/me/bio',
+  '/users/:id/bio/',
   authentication,
   UserMiddleware.findRole,
   getBioController
@@ -151,181 +159,60 @@ router.get(
 
 /**
  * @swagger
- *
- * /upload/video:
- *  post:
- *    summary: course video
- *    description: user (mentor) can upload course video
- *    tags:
- *      - Users
- *    requestBody:
- *      required: true
- *      content:
- *        multipart/form-data:
- *          schema:
- *            type: object
- *            properties:
- *              video:
- *                type: string
- *                format: binary
- *    produces:
- *      application/json:
- *        schema:
- *          type: object
- *          properties:
- *            status:
- *              type: number
- *            message:
+ *  paths:
+ *    /users/{id}/profile/:
+ *      patch:
+ *        tags:
+ *          - users
+ *        description: user profile image
+ *        summary: Updte user profile image using user ID
+ *        parameters:
+ *          - in: path
+ *            name: id
+ *            description: User ID
+ *            required: true
+ *            schema:
  *              type: string
- *            payload:
- *              type: object
- *              properties:
- *                url:
- *                  type: string
- *    responses:
- *      201:
- *        description: successfull
- *      403:
- *        description: forbidden
- *      401:
- *        description: unauthorized
- */
-router.post(
-  '/upload/video',
-  authentication,
-  UserMiddleware.findRole,
-  videoUpload
-);
-
-router.post(
-  '/upload/thumbnail',
-  authentication,
-  UserMiddleware.findRole,
-  thumbnailUpload
-);
-
-/**
- * @swagger
+ *              format: uuid
+ *        requestBody:
+ *          required: true
+ *          content:
+ *            multipart/form-data:
+ *              schema:
+ *                type: object
+ *                required: [image]
+ *                properties:
+ *                  image:
+ *                    type: string
+ *                    format: binary
+ *        responses:
+ *          201:
+ *            description: Uploaded successfully
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    status:
+ *                      type: number
+ *                      default: 201
+ *                    message:
+ *                      type: string
+ *                      default: Image uploaded successfully
+ *                    payload:
+ *                      type: object
+ *                      properties:
+ *                        url:
+ *                          type: string
+ *                          default:
+ *                            https://res.cloudinary.com/dbx/image/upload/v167/LearnIT/pictures/image-b5dcb3c3-9f005.png
+ *          400:
+ *            description: Bad request
+ *          401:
+ *            description: Unauthorized
  *
- * /add/course:
- *  post:
- *    summary: add course
- *    description: user (mentor) can add course
- *    tags:
- *      - Users
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              course_name:
- *                type: string
- *              price:
- *                type: string
- *              video_url:
- *                type: array
- *                items:
- *                  type: string
- *    produces:
- *      application/json:
- *        schema:
- *          type: object
- *          properties:
- *            status:
- *              type: number
- *            message:
- *              type: string
- *            payload:
- *              type: object
- *    responses:
- *      201:
- *        description: successfull
- *      401:
- *        description: unauthorized
- *      403:
- *        description: forbidden
- *      400:
- *        description: bad request
- */
-router.post(
-  '/add/course',
-  authentication,
-  UserMiddleware.findRole,
-  courseValidator,
-  addCourse
-);
-
-/**
- * @swagger
  *
- * /courses:
- *  get:
- *    summary: User course
- *    description: Get user list of course
- *    tags:
- *      - Users
- *    responses:
- *      200:
- *        description: User course
- *      401:
- *        description: unauthorized
  */
-router.get('/courses', authentication, UserMiddleware.findRole, getCourses);
-
-router.post('/category', authentication, addCategory);
-
-router.get('/category/all', authentication, getAllCategory);
-
-router.post('/resource', authentication, addResource);
-
-/**
- * @swagger
- *
- * /resource/all:
- *  get:
- *    summary: User resource on category
- *    description: Get list of category resource
- *    tags:
- *      - Users
- *    responses:
- *      200:
- *        description: User resource
- *      401:
- *        description: unauthorized
- */
-router.get('/resource/all', authentication, getAllResource);
-
-/**
- * @swagger
- *
- * /course:
- *  get:
- *    summary:  course
- *    description: Get all list of courses
- *    tags:
- *      - Users
- *    responses:
- *      200:
- *        description: User course
- *      404:
- *        description: not found
- */
-router.get('/courses/all', getAllCourses);
-
-router.patch('/user/profile', authentication, imageUpload);
-
-router.post('/course/enroll', authentication, enrollCourse);
-
-router.get('/course/enroll', authentication, getEnrolledCourse);
-
-router.delete('/course/unenroll/:courseId', authentication, unenrollCourse);
-
-router.get(
-  '/course/enroll/:courseId',
-  authentication,
-  getEnrollCourseDetailController
-);
+router.patch('/users/:id/profile/', authentication, imageUpload);
 
 export default router;

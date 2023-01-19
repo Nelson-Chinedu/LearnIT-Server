@@ -5,21 +5,25 @@ import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 import UserServices from '../services/UserServices';
 
-import { Resource } from '../db';
+import { Account, Resource } from '../db';
 
 const addResource = async (req: Request, res: Response) => {
-  const { user: id } = req;
+  const { id } = req.params;
 
+  const payload = {
+    id,
+    categoryId: req.body.categoryId,
+    name: req.body.name,
+    url: req.body.url,
+  };
   try {
-    const payload = {
-      accountId: id,
-      categoryId: req.body.category,
-      name: req.body.name,
-      url: req.body.url,
-    };
+    const user: Account | null = await UserServices.findUserById(req.user);
+
+    if (!user) respondWithWarning(res, 401, 'unauthorized', {});
+
     const resource: Resource = await UserServices.addResource(payload);
     if (resource) {
-      respondWithSuccess(res, 201, 'Resource added successfully', {});
+      respondWithSuccess(res, 201, 'Resource added successfully', resource);
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });

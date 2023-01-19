@@ -9,8 +9,9 @@ import {
   JoinColumn,
   BeforeInsert,
 } from 'typeorm';
-import Account from './Account';
+
 import Course from './Course';
+import Profile from './Profile';
 
 @Entity('Enroll')
 export default class Enroll extends BaseEntity {
@@ -23,12 +24,12 @@ export default class Enroll extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne((_type: any) => Account, (account: Account) => account.enroll, {
+  @ManyToOne((_type: any) => Profile, (profile: Profile) => profile.enroll, {
     eager: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  account: Account;
+  profile: Profile;
 
   @ManyToOne((_type: any) => Course, (course: Course) => course.enroll, {
     eager: true,

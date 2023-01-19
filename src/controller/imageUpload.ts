@@ -25,6 +25,7 @@ const imageUpload = (req: any, res: Response) => {
       respondWithWarning(res, 400, err.message, {});
     }
     try {
+      const { id } = req.params;
       const result: UploadApiResponse = await cloudinary.uploader.upload(
         req?.file?.path,
         {
@@ -37,7 +38,7 @@ const imageUpload = (req: any, res: Response) => {
         }
       );
 
-      await UserServices.updateProfilePicture(req.user, result.secure_url);
+      await UserServices.updateProfilePicture(id, result.secure_url);
 
       respondWithSuccess(res, 201, 'Image uploaded successfully', {
         url: result.secure_url,

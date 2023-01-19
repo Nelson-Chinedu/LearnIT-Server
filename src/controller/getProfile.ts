@@ -29,7 +29,6 @@ const getProfileController = async (
       respondWithSuccess(res, 200, 'User details', {
         email,
         role,
-        // mentorBio,
         ...rest,
       });
     }

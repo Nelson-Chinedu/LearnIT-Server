@@ -1,0 +1,393 @@
+/**
+ * @swagger
+ *
+ * /auth/signup/:
+ *    post:
+ *      security: []
+ *      description: Creates a new user account
+ *      tags:
+ *        - Auth
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                firstname:
+ *                  type: string
+ *                  default: john
+ *                lastname:
+ *                  type: string
+ *                  default: doe
+ *                email:
+ *                  type: string
+ *                  default: john.doe@email.com
+ *                password:
+ *                  type: string
+ *                  default: johndoeABC
+ *                role:
+ *                  type: string
+ *                  default: mentee
+ *      produces:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              status:
+ *                type: number
+ *              message:
+ *                type: string
+ *              payload:
+ *                type: object
+ *                properties:
+ *                  role:
+ *                    type: string
+ *                  token:
+ *                    type: string
+ *      responses:
+ *        201:
+ *          description: Account created
+ *        400:
+ *          description: Bad request
+ *        409:
+ *          description: Conflict
+ */
+
+
+
+
+  *                type: object
+ *                properties:
+ *                  firstname:
+ *                    type: string
+ *                    default: john
+ *                  lastname:
+ *                    type: string
+ *                    default: doe
+ *                  email:
+ *                    type: string
+ *                    default: john.doe@email.com
+ *                  password:
+ *                    type: string
+ *                    default: johndoeABC
+ *                  role:
+ *                    type: string
+ *                    default: mentee
+
+
+
+
+
+
+ /**
+ * @swagger
+ *
+ * /auth/signin/:
+ *    post:
+ *      security: []
+ *      description: Log existing user
+ *      tags:
+ *        - Auth
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *               $ref: '#/components/schemas/Signin'
+ *          application/x-www-form-urlencoded
+ *            schema:
+ *              $ref: '#/components/schemas/Signin'
+ *      produces:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              status:
+ *                type: number
+ *              message:
+ *                type: string
+ *              payload:
+ *                type: object
+ *                properties:
+ *                  role:
+ *                    type: string
+ *                  token:
+ *                    type: string
+ *      responses:
+ *        200:
+ *          description: Ok
+ *          schema:
+ *            type: object
+ *        400:
+ *          description: Bad request
+ *        404:
+ *          description: Not found
+ */
+
+
+ ----- update profile ---
+ /**
+ * @swagger
+ *
+ * /users/{id}/:
+ *  put:
+ *    description: Update user profile
+ *    tags:
+ *      - users
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              firstname:
+ *                type: string
+ *              lastname:
+ *                 type: string
+ *              phone:
+ *                 type: string
+ *              city:
+ *                 type: string
+ *              state:
+ *                 type: string
+ *              zipCode:
+ *                 type: string
+ *              address:
+ *                 type: string
+ *              country:
+ *                 type: string
+ *        multipart/formdata:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              firstname:
+ *                type: string
+ *              lastname:
+ *                type: string
+ *              phone:
+ *                type: string
+ *              city:
+ *                type: string
+ *              state:
+ *                type: string
+ *              zipCode:
+ *                type: string
+ *              address:
+ *                type: string
+ *              country:
+ *                type: string
+ *    produces:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: number
+ *            message:
+ *              type: string
+ *            payload:
+ *              type: object
+ *    responses:
+ *      204:
+ *        description: successfull
+ *      401:
+ *        description: unauthorized
+ *      400:
+ *        description: bad request
+ */
+
+
+
+ -------- BIO -------------
+ /**
+ * @swagger
+ *
+ * /users/{id}/bio/:
+ *  put:
+ *    description: update user bio
+ *    tags:
+ *      - users
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              mentorBio:
+ *                type: string
+ *        multipart/formdata:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              mentorBio:
+ *                type: string
+ *    responses:
+ *      204:
+ *        description: successfull
+ *      401:
+ *        description: unauthorized
+ *      400:
+ *        description: bad request
+ *      403:
+ *        description: forbidden
+ *
+ */
+
+
+ --------- GET SINGLE BIO ---------
+ /**
+ * @swagger
+ * /users/{id}/bio/:
+ *    get:
+ *      description: get user bio
+ *      tags:
+ *        - users
+ *      responses:
+ *        200:
+ *          description: user bio
+ *        403:
+ *          description: forbidden
+ *        401:
+ *          description: unauthorized
+ *        400:
+ *          description: error
+ */
+
+
+
+ ------- POST COURSE -------
+
+ /**
+ * @swagger
+ *
+ * /courses/:
+ *  post:
+ *    description: user (mentor) can add course
+ *    tags:
+ *      - courses
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              course_name:
+ *                type: string
+ *              price:
+ *                type: string
+ *              video_url:
+ *                type: array
+ *                items:
+ *                  type: string
+ *    produces:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: number
+ *            message:
+ *              type: string
+ *            payload:
+ *              type: object
+ *    responses:
+ *      201:
+ *        description: successfull
+ *      401:
+ *        description: unauthorized
+ *      403:
+ *        description: forbidden
+ *      400:
+ *        description: bad request
+ */
+
+
+
+ ----------- POST VIDEO ------------
+ /**
+ * @swagger
+ *
+ * /courses/video/:
+ *  post:
+ *    description: upload course video
+ *    tags:
+ *      - courses
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              video:
+ *                type: string
+ *                format: binary
+ *    produces:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: number
+ *            message:
+ *              type: string
+ *            payload:
+ *              type: object
+ *              properties:
+ *                url:
+ *                  type: string
+ *    responses:
+ *      201:
+ *        description: successfull
+ *      403:
+ *        description: forbidden
+ *      401:
+ *        description: unauthorized
+ */
+
+
+ ------- Upload thumbnail ---------
+ /**
+ * @swagger
+ *
+ * /courses/thumbnail/:
+ *  post:
+ *    description: upload course thumbnail
+ *    tags:
+ *      - courses
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              thumbnail:
+ *                type: string
+ *                format: binary
+ *    produces:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          properties:
+ *            status:
+ *              type: number
+ *            message:
+ *              type: string
+ *            payload:
+ *              type: object
+ *              properties:
+ *                url:
+ *                  type: string
+ *    responses:
+ *      201:
+ *        description: successfull
+ *      403:
+ *        description: forbidden
+ *      401:
+ *        description: unauthorized
+ */

@@ -7,15 +7,13 @@ import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 const getEnrollCourseDetailController = async (req: Request, res: Response) => {
   try {
-    const {
-      user: accountId,
-      params: { courseId },
-    } = req;
+    const { id: userId, courseId } = req.params;
 
     const payload = {
-      accountId,
+      id: userId,
       courseId,
     };
+
     const courseDetail = await UserServices.getEnrollCourseDetail(payload);
 
     if (!courseDetail) respondWithSuccess(res, 404, 'Course not found', {});
