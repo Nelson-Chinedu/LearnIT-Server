@@ -5,19 +5,25 @@ import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 import UserServices from '../services/UserServices';
 
-import { Category } from '../db';
+import { Account, Category } from '../db';
 
 const addCategory = async (req: Request, res: Response) => {
-  const { user: id } = req;
+  const { id } = req.params;
+  const payload = {
+    id,
+    name: req.body.name,
+  };
 
   try {
-    const payload = {
-      id,
-      name: req.body.name,
-    };
+    const user: Account | null = await UserServices.findUserById(req.user);
+
+    if (!user) respondWithWarning(res, 401, 'unauthorized', {});
+
     const category: Category = await UserServices.addCategory(payload);
     if (category) {
-      respondWithSuccess(res, 201, 'Category created successfully', {});
+      respondWithSuccess(res, 201, 'Category created successfully', {
+        category,
+      });
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });

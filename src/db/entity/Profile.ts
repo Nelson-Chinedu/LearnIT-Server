@@ -9,10 +9,15 @@ import {
   BeforeInsert,
   UpdateDateColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 import Account from './Account';
 import Course from './Course';
+import Bio from './Bio';
+import Enroll from './Enroll';
+import Category from './Category';
+import Resource from './Resource';
 @Entity('Profile')
 export default class Profile extends BaseEntity {
   @PrimaryColumn('uuid')
@@ -51,6 +56,9 @@ export default class Profile extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @OneToOne((_type: any) => Bio, (bio: Bio) => bio.profile)
+  bio: Bio;
+
   @OneToOne((_type: any) => Account, (account: Account) => account.profile, {
     eager: true,
     onDelete: 'CASCADE',
@@ -62,6 +70,15 @@ export default class Profile extends BaseEntity {
     onDelete: 'CASCADE',
   })
   course: Course;
+
+  @OneToMany((_type: any) => Enroll, (enroll: Enroll) => enroll.profile)
+  enroll: Enroll;
+
+  @OneToMany((_type: any) => Category, (category: Category) => category.profile)
+  category: Category;
+
+  @OneToMany((_type: any) => Resource, (resource: Resource) => resource.profile)
+  resource: Resource;
 
   @BeforeInsert()
   addId() {

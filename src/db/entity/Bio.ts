@@ -11,7 +11,7 @@ import {
   OneToOne,
 } from 'typeorm';
 
-import Account from './Account';
+import Profile from './Profile';
 
 @Entity('Bio')
 export default class Bio extends BaseEntity {
@@ -27,12 +27,12 @@ export default class Bio extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne((_type: any) => Account, (account: Account) => account.bio, {
+  @OneToOne((_type: any) => Profile, (profile: Profile) => profile.bio, {
     eager: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  account: Account;
+  profile: Profile;
 
   @BeforeInsert()
   addId() {

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { UpdateResult } from 'typeorm';
 import winstonEnvLogger from 'winston-env-logger';
 
 import { Account } from '../db';
@@ -8,22 +9,19 @@ import UserServices from '../services/UserServices';
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 const updateProfile = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+
   try {
-    const { user: id } = req;
-    const user: Account | null = await UserServices.findUserById(id);
+    const user: Account | null = await UserServices.findUserById(req.user);
 
     if (!user) respondWithWarning(res, 401, 'unauthorized', {});
 
-    if (user) {
-      const { profile } = user;
-      const data: object = await UserServices.updateProfile(
-        profile.id,
-        req.body
-      );
+    const data: UpdateResult = await UserServices.updateProfile(id, req.body);
 
-      if (data) {
-        respondWithSuccess(res, 204, 'Profile updated successfully', {});
-      }
+    if (data.affected === 0) {
+      respondWithSuccess(res, 404, 'Profile not found', {});
+    } else {
+      respondWithSuccess(res, 204, 'Profile updated successfully', {});
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });

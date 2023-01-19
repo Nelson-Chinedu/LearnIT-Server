@@ -4,5 +4,6 @@ import Bio from './entity/Bio';
 import Course from './entity/Course';
 import Category from './entity/Category';
 import Resource from './entity/Resource';
+import Enroll from './entity/Enroll';
 
-export { Account, Profile, Bio, Course, Category, Resource };
+export { Account, Profile, Bio, Course, Category, Resource, Enroll };
