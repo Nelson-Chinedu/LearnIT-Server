@@ -76,8 +76,8 @@ const options = {
       { name: 'category', description: 'Category info' },
     ],
   },
-  // apis: [resolve(__dirname, '/routes/api/*.ts')],
-  apis: 'build/routes/api/*.js',
+  apis: [resolve(__dirname, '../routes/api/*.js')],
+  // apis: 'build/routes/api/*.js',
 };
 
 console.log(resolve(__dirname, '/routes/api'), 'DIR');
