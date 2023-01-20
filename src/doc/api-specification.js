@@ -76,7 +76,9 @@ const options = {
       { name: 'category', description: 'Category info' },
     ],
   },
-  apis: [resolve(__dirname, '../routes/api/*.ts')],
+  apis: [resolve(__dirname, '/routes/api/*.ts')],
 };
+
+console.log(__dirname, 'DIR');
 
 export default options;

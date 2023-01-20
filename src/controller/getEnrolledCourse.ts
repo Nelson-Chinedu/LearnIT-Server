@@ -16,11 +16,7 @@ const getEnrolledCourse = async (req: Request, res: Response) => {
 
     const enrolledCourses: Enroll[] = await UserServices.getEnrolledCourse(id);
 
-    if (!enrolledCourses.length) {
-      respondWithSuccess(res, 404, 'Not found', {});
-    } else {
-      respondWithSuccess(res, 200, 'successfull', enrolledCourses);
-    }
+    respondWithSuccess(res, 200, 'successfull', enrolledCourses);
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
     respondWithWarning(res, 400, 'An error occurred', {});
