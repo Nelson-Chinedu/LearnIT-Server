@@ -58,11 +58,9 @@ const options = {
     servers: [
       {
         url: `http://localhost:8080/api/v1`,
-        description: 'Dev',
       },
       {
         url: `https://learnit-prod.onrender.com/api/v1`,
-        description: 'Test',
       },
     ],
     tags: [
@@ -76,10 +74,10 @@ const options = {
       { name: 'category', description: 'Category info' },
     ],
   },
-  apis: [resolve(__dirname, '../routes/api/*.js')],
-  // apis: 'build/routes/api/*.js',
+  apis: [
+    resolve(__dirname, '../routes/api/*.js'),
+    resolve(__dirname, '../routes/api/*.ts'),
+  ],
 };
-
-console.log(resolve(__dirname, '/routes/api'), 'DIR');
 
 export default options;
