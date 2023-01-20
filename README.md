@@ -6,4 +6,4 @@
 
 ## Api Doc
 
-[API Link](https://learnit-prod.onrender.com/api/docs/)
+[API Doc](https://learnit-prod.onrender.com/api/v1/docs/)
