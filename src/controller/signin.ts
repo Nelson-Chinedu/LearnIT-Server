@@ -4,6 +4,7 @@ import winstonEnvLogger from 'winston-env-logger';
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
 import token from '../util/Token';
+import { cookieOptions } from '../util/cookieOptions';
 
 const signinController = (req: Request, res: Response) => {
   try {
@@ -19,12 +20,7 @@ const signinController = (req: Request, res: Response) => {
       token: accessToken,
     };
     return respondWithSuccess(
-      res.cookie('cid', accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production' ? true : false,
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : true,
-        path: '/',
-      }),
+      res.cookie('cid', accessToken, cookieOptions),
       200,
       'Logged in successfully',
       payload

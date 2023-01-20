@@ -8,6 +8,8 @@ import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
+import { cookieOptions } from '../util/cookieOptions';
+
 const signupController = async (req: Request, res: Response) => {
   const hashedPassword = await hash.hashPassword(req.body.password);
 
@@ -28,12 +30,7 @@ const signupController = async (req: Request, res: Response) => {
         token: accessToken,
       };
       return respondWithSuccess(
-        res.cookie('cid', accessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production' ? true : false,
-          sameSite: process.env.NODE_ENV === 'production' ? 'none' : true,
-          path: '/',
-        }),
+        res.cookie('cid', accessToken, cookieOptions),
         201,
         'Account created successfully',
         payload
