@@ -17,11 +17,7 @@ const getAllCategory = async (req: Request, res: Response) => {
 
     const categories: Category[] = await UserServices.getCategories(id);
 
-    if (!categories.length) {
-      respondWithSuccess(res, 404, 'Not found', {});
-    } else {
-      respondWithSuccess(res, 200, 'successfull', categories);
-    }
+    respondWithSuccess(res, 200, 'successfull', categories);
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
     respondWithWarning(res, 400, 'An error occurred', {});

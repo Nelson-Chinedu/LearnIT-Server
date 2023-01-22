@@ -264,8 +264,6 @@ router.get('/courses/all/', getAllCourses);
  *            description: Unauthorized
  *          403:
  *            description: Forbidden
- *          404:
- *            description: Not found
  *
  */
 router.get(

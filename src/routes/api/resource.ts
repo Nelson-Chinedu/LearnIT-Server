@@ -1,7 +1,7 @@
 import express from 'express';
 
 import addResource from '../../controller/addResource';
-import getResource from '../../controller/getResource';
+// import getResource from '../../controller/getResource';
 import getAllResource from '../../controller/getAllResource';
 
 import { authentication } from '../../middlewares/authentication';
@@ -41,7 +41,7 @@ router.get('/resources/:id/', authentication, getAllResource);
  *        tags:
  *          - resources
  *        description: Get resources
- *        summary: Fetch user resources passing user ID
+ *        summary: Add resource to a category passing user ID
  *        parameters:
  *          - in: path
  *            name: id
@@ -71,37 +71,5 @@ router.get('/resources/:id/', authentication, getAllResource);
  *            description: Bad request
  */
 router.post('/resources/:id/', authentication, addResource);
-
-/**
- * @swagger
- *  paths:
- *    /resources/{id}:
- *      get:
- *        tags:
- *          - resources
- *        description: Get resource
- *        summary: Fetch user resources to a category passing user ID and category ID
- *        parameters:
- *          - in: path
- *            name: id
- *            description: User ID
- *            required: true
- *            schema:
- *              type: string
- *              format: uuid
- *          - in: query
- *            name: categoryId
- *            description: Category ID
- *            required: true
- *            schema:
- *              type: string
- *              format: uuid
- *        responses:
- *          200:
- *            description: Successfull
- *          401:
- *            description: Unauthorized
- */
-router.get('/resources/:id', authentication, getResource);
 
 export default router;
