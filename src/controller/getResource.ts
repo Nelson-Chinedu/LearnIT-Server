@@ -13,6 +13,7 @@ const getResource = async (req: Request, res: Response) => {
     id,
     categoryId: req.query.categoryId,
   };
+
   try {
     const user: Account | null = await UserServices.findUserById(req.user);
 

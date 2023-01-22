@@ -2,6 +2,7 @@ import express from 'express';
 
 import addCategory from '../../controller/addCategory';
 import getAllCategory from '../../controller/getAllCategory';
+import getResource from '../../controller/getResource';
 
 import { authentication } from '../../middlewares/authentication';
 
@@ -89,5 +90,37 @@ router.post('/category/:id/', authentication, addCategory);
  *            description: Unauthorized
  */
 router.get('/category/:id/', authentication, getAllCategory);
+
+/**
+ * @swagger
+ *  paths:
+ *    /category/{id}/resources:
+ *      get:
+ *        tags:
+ *          - category
+ *        description: Get resource
+ *        summary: Fetch user resources to a category passing user ID and category ID
+ *        parameters:
+ *          - in: path
+ *            name: id
+ *            description: User ID
+ *            required: true
+ *            schema:
+ *              type: string
+ *              format: uuid
+ *          - in: query
+ *            name: categoryId
+ *            description: Category ID
+ *            required: true
+ *            schema:
+ *              type: string
+ *              format: uuid
+ *        responses:
+ *          200:
+ *            description: Successfull
+ *          401:
+ *            description: Unauthorized
+ */
+router.get('/category/:id/resources', authentication, getResource);
 
 export default router;

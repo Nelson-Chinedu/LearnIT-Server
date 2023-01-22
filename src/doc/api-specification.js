@@ -16,6 +16,11 @@ import {
   CourseResponse,
 } from './schemas';
 
+const SERVER_URL =
+  process.env.NODE_ENV === 'development'
+    ? process.env.SERVER_URL_DEV
+    : process.env.SERVER_URL_PROD;
+
 const options = {
   swaggerDefinition: {
     openapi: '3.0.0',
@@ -57,10 +62,7 @@ const options = {
     ],
     servers: [
       {
-        url: `http://localhost:8080/api/v1`,
-      },
-      {
-        url: `https://learnit-prod.onrender.com/api/v1`,
+        url: SERVER_URL,
       },
     ],
     tags: [

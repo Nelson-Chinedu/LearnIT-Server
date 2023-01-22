@@ -23,22 +23,17 @@ export const CategoryResponse = {
     payload: {
       type: 'object',
       properties: {
-        catalog: {
-          type: 'object',
-          properties: {
-            name: {
-              type: 'string',
-              example: 'blog',
-            },
-            profile: {
-              type: 'string',
-              example: '47fd1ca0-dd7e-483e-80fb-d807616aea40',
-            },
-            id: {
-              type: 'string',
-              example: '47fd1ca0-dd7e-483e-80fb-d807616aea40',
-            },
-          },
+        name: {
+          type: 'string',
+          example: 'blog',
+        },
+        profile: {
+          type: 'string',
+          example: '47fd1ca0-dd7e-483e-80fb-d807616aea40',
+        },
+        id: {
+          type: 'string',
+          example: '47fd1ca0-dd7e-483e-80fb-d807616aea40',
         },
       },
     },

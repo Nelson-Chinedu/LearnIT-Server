@@ -21,9 +21,7 @@ const addCategory = async (req: Request, res: Response) => {
 
     const category: Category = await UserServices.addCategory(payload);
     if (category) {
-      respondWithSuccess(res, 201, 'Category created successfully', {
-        category,
-      });
+      respondWithSuccess(res, 201, 'Category created successfully', category);
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
