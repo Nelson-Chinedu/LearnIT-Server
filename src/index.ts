@@ -6,10 +6,15 @@ import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
+import compression from 'compression';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 // @ts-ignore
 import winstonEnvLogger from 'winston-env-logger';
 
 import router from './routes';
+
+import { ISocketData } from './interface/socket';
 
 const config = require('../ormconfig');
 
@@ -22,7 +27,10 @@ export const AppDataSource = new DataSource(config);
 
 const app = express();
 
+const server = createServer(app);
+
 app.use(cors(corsOptions));
+app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -38,4 +46,27 @@ AppDataSource.initialize()
   })
   .catch((error: Error) => winstonEnvLogger.error({ message: error }));
 
-export default app;
+const io = new Server(server, {
+  cors: {
+    origin: process.env.CLIENT_URL,
+    methods: ['GET', 'POST'],
+  },
+});
+
+io.on('connection', (socket: any) => {
+  winstonEnvLogger.info({ message: `${socket.id} Connected to socket` });
+
+  socket.on('join_room', (data: string) => {
+    socket.join(data);
+  });
+
+  socket.on('chat', (data: ISocketData) => {
+    socket.nsp.to(data.roomNumber).emit('receive_message', data);
+  });
+
+  socket.on('disconnect', () => {
+    winstonEnvLogger.info({ message: `${socket.id} left the chat` });
+  });
+});
+
+export default server;
