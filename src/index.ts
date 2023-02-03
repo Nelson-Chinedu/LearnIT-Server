@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import '@babel/polyfill';
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
+import { EventEmitter } from 'events';
 import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -14,7 +15,9 @@ import winstonEnvLogger from 'winston-env-logger';
 
 import router from './routes';
 
-import { ISocketData } from './interface/socket';
+import { ISocketData } from './interface/ISocket';
+
+import { sendMail } from './events/sendMail';
 
 const config = require('../ormconfig');
 
@@ -22,6 +25,8 @@ const corsOptions: CorsOptions = {
   origin: true,
   credentials: true,
 };
+
+export const eventEmitter = new EventEmitter();
 
 export const AppDataSource = new DataSource(config);
 
@@ -34,6 +39,8 @@ app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+eventEmitter.on('verification_mail', sendMail);
 
 app.use(router);
 app.get('/', (_req: Request, res: Response) =>
