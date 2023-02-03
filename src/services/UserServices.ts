@@ -462,6 +462,28 @@ class UserServices {
       throw error;
     }
   }
+
+  /**
+   * verifyEmail - used to verify new user
+   * @param {string} id
+   * @returns {object}
+   */
+  async verifyEmail(id: string) {
+    try {
+      const account: UpdateResult = await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Account)
+        .set({
+          verified: true,
+        })
+        .where('id = :id', { id })
+        .execute();
+
+      return account;
+    } catch (error) {
+      throw new Error('An error occurred while updating user');
+    }
+  }
 }
 
 export default new UserServices();

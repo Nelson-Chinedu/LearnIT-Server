@@ -3,12 +3,13 @@ import winstonEnvLogger from 'winston-env-logger';
 
 import hash from '../util/Hash';
 import token from '../util/Token';
+import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
+
+import { signupTemplate } from '../template/mail';
 
 import UserServices from '../services/UserServices';
 
-import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
-
-import { cookieOptions } from '../util/cookieOptions';
+import { eventEmitter } from '../index';
 
 const signupController = async (req: Request, res: Response) => {
   const hashedPassword = await hash.hashPassword(req.body.password);
@@ -27,10 +28,22 @@ const signupController = async (req: Request, res: Response) => {
       );
       const payload = {
         role: req.body.role,
-        token: accessToken,
+        verificationLink: `${process.env.CLIENT_URL}/auth/verify?t=${accessToken}`,
       };
+
+      if (process.env.NODE_ENV === 'production') {
+        eventEmitter.emit('verification_mail', {
+          email: req.body.email,
+          subject: 'Welcome to LearnIT! Confirm Your Email',
+          body: signupTemplate({
+            name: `${req.body.firstname} ${req.body.lastname}`,
+            url: payload.verificationLink,
+          }),
+        });
+      }
+
       return respondWithSuccess(
-        res.cookie('cid', accessToken, cookieOptions),
+        res,
         201,
         'Account created successfully',
         payload

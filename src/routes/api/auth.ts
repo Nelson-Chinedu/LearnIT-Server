@@ -3,6 +3,7 @@ import express from 'express';
 import signupController from '../../controller/signup';
 import signinController from '../../controller/signin';
 import getProfileController from '../../controller/getProfile';
+import verifyEmailController from '../../controller/verifyEmail';
 
 import signupValidator from '../../validation/signup';
 import signinValidator from '../../validation/signin';
@@ -123,6 +124,57 @@ router.post(
   UserMiddleware.findUser,
   signinController
 );
+
+/**
+ * @swagger
+ *
+ *  paths:
+ *    /auth/verify/:
+ *      post:
+ *        tags:
+ *          - auth
+ *        security: []
+ *        description: Verify user
+ *        summary: Verify new user email address
+ *        requestBody:
+ *          required: true
+ *          description: verify email if user exist
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  token:
+ *                    type: string
+ *            application/x-www-form-urlencoded:
+ *              schema:
+ *                type: object
+ *                required: [token]
+ *                properties:
+ *                  token:
+ *                    type: string
+ *        responses:
+ *          200:
+ *            description:
+ *            content:
+ *              application/json:
+ *                schema:
+ *                  type: object
+ *                  properties:
+ *                    status:
+ *                      type: number
+ *                      default: 200
+ *                    message:
+ *                      type: string
+ *                      default: Email verified, proceed to login
+ *                    payload:
+ *                      type: object
+ *          400:
+ *            description: Something went wrong
+ *          404:
+ *            description: Not found
+ */
+router.post('/auth/verify/', verifyEmailController);
 
 /**
  * @swagger
