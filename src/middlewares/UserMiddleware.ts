@@ -5,7 +5,12 @@ import { Account } from '../db';
 import UserServices from '../services/UserServices';
 
 import Hash from '../util/Hash';
+import token from '../util/Token';
 import { respondWithWarning } from '../util/httpResponse';
+
+import { signupTemplate } from '../template/mail';
+
+import { eventEmitter } from '../index';
 
 class UserMiddleware {
   /**
@@ -46,6 +51,7 @@ class UserMiddleware {
       const user: Account | null = await UserServices.findUserByEmail(
         req.body.email
       );
+
       if (!user) {
         return respondWithWarning(
           res,
@@ -59,6 +65,41 @@ class UserMiddleware {
           res,
           400,
           'Invalid email address or password',
+          {}
+        );
+      }
+      if (user && !user.verified) {
+        const accessToken = token.createToken(
+          { id: user.id },
+          process.env.VERIFICATION_JWT_kEY as string,
+          '2d'
+        );
+        const payload = {
+          role: user.role,
+          verificationLink: `${process.env.CLIENT_URL}/auth/verify?t=${accessToken}`,
+        };
+        if (process.env.NODE_ENV !== 'production') {
+          eventEmitter.emit('verification_mail', {
+            email: req.body.email,
+            subject: 'Welcome to LearnIT! Confirm Your Email',
+            body: signupTemplate({
+              name: `Howdy`,
+              url: payload.verificationLink,
+            }),
+          });
+        }
+        return respondWithWarning(
+          res,
+          400,
+          'Account not verified, Kindly check your email to verify account',
+          {}
+        );
+      }
+      if (user && user.blocked) {
+        return respondWithWarning(
+          res,
+          401,
+          'Account blocked, kindly contact support',
           {}
         );
       }
