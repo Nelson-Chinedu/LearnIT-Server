@@ -51,7 +51,7 @@ class UserMiddleware {
       const user: Account | null = await UserServices.findUserByEmail(
         req.body.email
       );
-      console.log(user?.profile, '>>>>');
+
       if (!user) {
         return respondWithWarning(
           res,
