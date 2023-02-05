@@ -26,12 +26,17 @@ const verifyEmail = async (req: Request, res: Response) => {
         respondWithSuccess(
           res,
           200,
-          'Email already verified, proceed to login',
+          'Email address already verified, proceed to login',
           {}
         );
       } else {
         await UserServices.verifyEmail(id);
-        respondWithSuccess(res, 200, 'Email verified, proceed to login', {});
+        respondWithSuccess(
+          res,
+          200,
+          'Email address verified, proceed to login',
+          {}
+        );
       }
     } else {
       respondWithWarning(res, 400, 'Something went wrong', {});
