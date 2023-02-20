@@ -8,7 +8,7 @@ import { cookieOptions } from '../util/cookieOptions';
 
 const signinController = (req: Request, res: Response) => {
   try {
-    const { id, role }: any = req.user;
+    const { id, role, isSubscribed }: any = req.user;
     const accessToken = token.createToken(
       { id },
       process.env.VERIFICATION_JWT_kEY as string,
@@ -17,6 +17,7 @@ const signinController = (req: Request, res: Response) => {
 
     const payload = {
       role,
+      isSubscribed,
       token: accessToken,
     };
     return respondWithSuccess(

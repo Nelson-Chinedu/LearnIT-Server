@@ -21,7 +21,7 @@ const getProfileController = async (
     if (user) {
       const {
         profile: {
-          account: { email, role },
+          account: { email, role, subscription, isSubscribed },
           ...rest
         },
       } = user;
@@ -29,6 +29,8 @@ const getProfileController = async (
       respondWithSuccess(res, 200, 'User details', {
         email,
         role,
+        subscription,
+        isSubscribed,
         ...rest,
       });
     }
