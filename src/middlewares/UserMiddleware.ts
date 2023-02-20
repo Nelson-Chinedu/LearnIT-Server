@@ -109,6 +109,7 @@ class UserMiddleware {
         role: user.role,
         blocked: user.blocked,
         verified: user.verified,
+        isSubscribed: user.isSubscribed,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       };

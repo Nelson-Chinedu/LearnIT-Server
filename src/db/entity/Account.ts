@@ -39,6 +39,12 @@ export default class Account extends BaseEntity {
   @Column('boolean', { default: false })
   verified: boolean;
 
+  @Column('boolean', { default: false })
+  isSubscribed: boolean;
+
+  @Column('varchar', { default: '' })
+  subscription: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

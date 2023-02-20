@@ -465,7 +465,7 @@ class UserServices {
 
   /**
    * verifyEmail - used to verify new user
-   * @param {string} id
+   * @param {uuid} id
    * @returns {object}
    */
   async verifyEmail(id: string) {
@@ -475,6 +475,29 @@ class UserServices {
         .update(Account)
         .set({
           verified: true,
+        })
+        .where('id = :id', { id })
+        .execute();
+
+      return account;
+    } catch (error) {
+      throw new Error('An error occurred while updating user');
+    }
+  }
+
+  /**
+   * updateSubscription - used to update user isSubscribe using id
+   * @param {uuid} id
+   * @returns {object}
+   */
+  async updateSubsription(id: Express.User | undefined, body: any) {
+    try {
+      const account: any = await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Account)
+        .set({
+          isSubscribed: true,
+          subscription: body,
         })
         .where('id = :id', { id })
         .execute();
