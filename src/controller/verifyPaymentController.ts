@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { UpdateResult } from 'typeorm';
 import winstonEnvLogger from 'winston-env-logger';
 
 import { Account } from '../db';
@@ -42,15 +41,7 @@ const verifyPaymentController = async (req: Request, res: Response) => {
         channel,
         card_type,
       };
-      const result: UpdateResult = await UserServices.updateSubsription(
-        id,
-        JSON.stringify(payload)
-      );
-      if (result.affected === 0) {
-        respondWithSuccess(res, 404, 'Account not found', {});
-      } else {
-        respondWithSuccess(res, 200, 'success', payload);
-      }
+      respondWithSuccess(res, 200, 'success', payload);
     }
   } catch (error: any) {
     winstonEnvLogger.error({ message: 'An error occured', error });
