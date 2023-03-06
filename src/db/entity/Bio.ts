@@ -21,6 +21,27 @@ export default class Bio extends BaseEntity {
   @Column('varchar')
   mentorBio: string;
 
+  @Column('varchar', { default: '' })
+  title: string;
+
+  @Column('varchar', { default: '' })
+  availability: string;
+
+  @Column('boolean', { default: false })
+  acceptingMentees: boolean;
+
+  @Column('varchar', { default: '' })
+  company: string;
+
+  @Column('varchar', { default: '' })
+  yearsOfExperience: number;
+
+  @Column('varchar', { default: '' })
+  fee: string;
+
+  @Column('varchar', { default: '' })
+  commitmentTime: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -7,6 +7,7 @@ import {
   Category,
   Resource,
   Enroll,
+  Subscription,
 } from '../db';
 import { UserRole } from '../db/entity/Account';
 
@@ -505,6 +506,87 @@ class UserServices {
       return account;
     } catch (error) {
       throw new Error('An error occurred while updating user');
+    }
+  }
+
+  async getSubscriptions(id: Express.User) {
+    try {
+      const subscriptions = await AppDataSource.manager
+        .getRepository(Subscription)
+        .createQueryBuilder('subscription')
+        .where('subscription.profile = :profileId', {
+          profileId: id,
+        })
+        .getMany();
+      return subscriptions;
+    } catch (error) {
+      throw new Error('An error occurred while');
+    }
+  }
+
+  async addSubscription(id: any, payload: any) {
+    const { card, mentorId } = payload;
+    const expireDate = new Date();
+    try {
+      const newSubscription: Subscription = AppDataSource.manager.create(
+        Subscription,
+        {
+          card,
+          expireDate,
+          menteeId: id,
+          profile: mentorId,
+        }
+      );
+      await AppDataSource.manager.save(newSubscription);
+      return newSubscription;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllMentors() {
+    try {
+      const allMentors: Account[] = await AppDataSource.manager
+        .getRepository(Account)
+        .createQueryBuilder('account')
+        .leftJoinAndSelect('account.profile', 'profile')
+        .leftJoinAndSelect('profile.bio', 'bio')
+        // the below query selects the profile detail relationship excluding the account details
+        .select([
+          'account.id',
+          'profile.id',
+          'profile.firstname',
+          'profile.lastname',
+          'profile.picture',
+          'bio.mentorBio',
+        ])
+        .where('account.role = :role', { role: 'mentor' })
+        .getMany();
+      return allMentors;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getMentors(id: Express.User | undefined) {
+    try {
+      const subscribedMentors: Subscription[] = await AppDataSource.manager
+        .getRepository(Subscription)
+        .createQueryBuilder('subscription')
+        .leftJoinAndSelect('subscription.profile', 'profile')
+        // the below query selects the profile detail relationship excluding the account details
+        .select([
+          'subscription.id',
+          'profile.id',
+          'profile.firstname',
+          'profile.lastname',
+          'profile.picture',
+        ])
+        .where('subscription.menteeId = :id', { id })
+        .getMany();
+      return subscribedMentors;
+    } catch (error) {
+      throw error;
     }
   }
 }

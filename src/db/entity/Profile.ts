@@ -18,6 +18,7 @@ import Bio from './Bio';
 import Enroll from './Enroll';
 import Category from './Category';
 import Resource from './Resource';
+import Subscription from './subscription';
 @Entity('Profile')
 export default class Profile extends BaseEntity {
   @PrimaryColumn('uuid')
@@ -79,6 +80,12 @@ export default class Profile extends BaseEntity {
 
   @OneToMany((_type: any) => Resource, (resource: Resource) => resource.profile)
   resource: Resource;
+
+  @OneToMany(
+    (_type: any) => Subscription,
+    (subscription: Subscription) => subscription.profile
+  )
+  subscription: Subscription;
 
   @BeforeInsert()
   addId() {

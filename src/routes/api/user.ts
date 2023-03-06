@@ -11,6 +11,8 @@ import UserMiddleware from '../../middlewares/UserMiddleware';
 import profileValidator from '../../validation/profile';
 import mentorBioValidator from '../../validation/mentorBio';
 import verifyPaymentController from '../../controller/verifyPaymentController';
+import getAllMentorsController from '../../controller/getAllMentors';
+import getMentorsController from '../../controller/getMentorsController';
 
 const router = express.Router();
 
@@ -216,10 +218,8 @@ router.get(
  */
 router.patch('/users/:id/profile/', authentication, imageUpload);
 
-router.get(
-  '/users/payment/:referenceID/verify/',
-  authentication,
-  verifyPaymentController
-);
+router.get('/mentors/', authentication, getAllMentorsController);
+
+router.get('/mentors/:id/', authentication, getMentorsController);
 
 export default router;
