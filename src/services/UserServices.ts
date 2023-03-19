@@ -533,8 +533,10 @@ class UserServices {
         {
           card,
           expireDate,
-          menteeId: id,
-          profile: mentorId,
+          // menteeId: id,
+          mentee: id,
+          // profile: mentorId,
+          mentor: mentorId,
         }
       );
       await AppDataSource.manager.save(newSubscription);
@@ -568,21 +570,43 @@ class UserServices {
     }
   }
 
-  async getMentors(id: Express.User | undefined) {
+  async getSubscribedMentors(id: Express.User | undefined) {
     try {
       const subscribedMentors: Subscription[] = await AppDataSource.manager
         .getRepository(Subscription)
         .createQueryBuilder('subscription')
-        .leftJoinAndSelect('subscription.profile', 'profile')
+        .leftJoinAndSelect('subscription.mentor', 'mentor')
         // the below query selects the profile detail relationship excluding the account details
         .select([
           'subscription.id',
-          'profile.id',
-          'profile.firstname',
-          'profile.lastname',
-          'profile.picture',
+          'mentor.id',
+          'mentor.firstname',
+          'mentor.lastname',
+          'mentor.picture',
         ])
         .where('subscription.menteeId = :id', { id })
+        .getMany();
+      return subscribedMentors;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSubscribedMentees(id: Express.User | undefined) {
+    try {
+      const subscribedMentors = await AppDataSource.manager
+        .getRepository(Subscription)
+        .createQueryBuilder('subscription')
+        .leftJoinAndSelect('subscription.mentee', 'mentee')
+        // the below query selects the profile detail relationship excluding the account details
+        .select([
+          'subscription.id',
+          'mentee.id',
+          'mentee.firstname',
+          'mentee.lastname',
+          'mentee.picture',
+        ])
+        .where('subscription.mentorId = :id', { id })
         .getMany();
       return subscribedMentors;
     } catch (error) {

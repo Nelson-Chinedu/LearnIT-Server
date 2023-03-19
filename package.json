@@ -51,6 +51,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.7.3",
     "randomstring": "^1.2.2",
+    "redis": "^4.6.5",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "^0.13.9",
     "socket.io": "^4.5.4",
