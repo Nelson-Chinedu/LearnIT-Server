@@ -7,14 +7,14 @@ import UserServices from '../services/UserServices';
 
 import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 
-const getMentorsController = async (req: Request, res: Response) => {
+const getMenteesController = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user: Account | null = await UserServices.findUserById(req.user);
 
     if (!user) respondWithWarning(res, 401, 'unauthorized', {});
 
-    const mentors: Subscription[] = await UserServices.getSubscribedMentors(id);
+    const mentors: Subscription[] = await UserServices.getSubscribedMentees(id);
 
     respondWithSuccess(res, 200, 'successfull', mentors);
   } catch (error: any) {
@@ -23,4 +23,4 @@ const getMentorsController = async (req: Request, res: Response) => {
   }
 };
 
-export default getMentorsController;
+export default getMenteesController;

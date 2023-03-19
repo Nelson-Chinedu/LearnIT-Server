@@ -1,5 +1,8 @@
 import express from 'express';
 
+import getAllMentorsController from '../../controller/getAllMentors';
+import getMenteesController from '../../controller/getMenteesController';
+import getMentorsController from '../../controller/getMentorsController';
 import getSubscriptionsController from '../../controller/getSubscriptions';
 import subscriptionController from '../../controller/subscription';
 import verifyPaymentController from '../../controller/verifyPaymentController';
@@ -17,5 +20,15 @@ router.get(
   authentication,
   verifyPaymentController
 );
+
+router.get(
+  '/subscription/mentors/all/',
+  authentication,
+  getAllMentorsController
+);
+
+router.get('/subscription/:id/mentors/', authentication, getMentorsController);
+
+router.get('/subscription/:id/mentees/', authentication, getMenteesController);
 
 export default router;
