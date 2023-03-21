@@ -21,7 +21,7 @@ export default class Subscription extends BaseEntity {
   @Column('varchar')
   card: string;
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   expireDate: Date;
 
   @CreateDateColumn()
