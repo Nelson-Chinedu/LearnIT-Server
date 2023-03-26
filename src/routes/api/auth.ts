@@ -4,6 +4,7 @@ import signupController from '../../controller/signup';
 import signinController from '../../controller/signin';
 import getProfileController from '../../controller/getProfile';
 import verifyEmailController from '../../controller/verifyEmail';
+import logoutController from '../../controller/logout';
 
 import signupValidator from '../../validation/signup';
 import signinValidator from '../../validation/signin';
@@ -197,5 +198,7 @@ router.post('/auth/verify/', verifyEmailController);
  *            description: Unauthorized
  */
 router.get('/auth/user/', authentication, getProfileController);
+
+router.post('/auth/logout/', authentication, logoutController);
 
 export default router;
