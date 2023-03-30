@@ -3,6 +3,10 @@ import Joi from 'joi';
 
 const schema = Joi.object({
   mentorBio: Joi.string(),
+  company: Joi.string(),
+  yearsOfExperience: Joi.string(),
+  fee: Joi.string(),
+  timezone: Joi.string(),
 });
 
 const schemaParam = Joi.object({
