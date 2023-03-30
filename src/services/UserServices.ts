@@ -19,6 +19,9 @@ interface ICreateUser {
   password: string;
   firstname: string;
   lastname: string;
+  company?: string;
+  yearsOfExperience?: string;
+  title?: string;
 }
 
 class UserServices {
@@ -47,7 +50,16 @@ class UserServices {
    */
   async createUser(payload: ICreateUser): Promise<string> {
     try {
-      const { email, role, password, firstname, lastname } = payload;
+      const {
+        email,
+        role,
+        password,
+        firstname,
+        lastname,
+        company,
+        yearsOfExperience,
+        title,
+      } = payload;
 
       const newAccount: Account = AppDataSource.manager.create(Account, {
         email,
@@ -71,7 +83,11 @@ class UserServices {
 
       if (role === 'mentor') {
         const newBio: Bio = AppDataSource.manager.create(Bio, {
+          yearsOfExperience,
+          company,
+          title,
           mentorBio: '',
+          availability: false,
           profile: newProfile,
         });
         await AppDataSource.manager.save(newBio);
@@ -180,19 +196,13 @@ class UserServices {
    * @param {object} data
    * @returns {object}
    */
-  async updateBio(
-    id: string,
-    data: {
-      mentorBio: string;
-    }
-  ) {
-    const { mentorBio } = data;
+  async updateBio(id: string, data: object) {
     try {
       const profile: UpdateResult = await AppDataSource.manager
         .createQueryBuilder()
         .update(Bio)
         .set({
-          mentorBio,
+          ...data,
         })
         .where('profile.id = :id', { id })
         .execute();

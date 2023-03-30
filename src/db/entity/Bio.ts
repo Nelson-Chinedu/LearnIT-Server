@@ -24,8 +24,8 @@ export default class Bio extends BaseEntity {
   @Column('varchar', { default: '' })
   title: string;
 
-  @Column('varchar', { default: '' })
-  availability: string;
+  @Column('boolean', { default: false })
+  availability: boolean;
 
   @Column('boolean', { default: false })
   acceptingMentees: boolean;
@@ -34,13 +34,13 @@ export default class Bio extends BaseEntity {
   company: string;
 
   @Column('varchar', { default: '' })
-  yearsOfExperience: number;
+  yearsOfExperience: string;
 
-  @Column('varchar', { default: '' })
+  @Column('varchar', { default: 'Not set' })
   fee: string;
 
-  @Column('varchar', { default: '' })
-  commitmentTime: string;
+  @Column('varchar', { default: 'GMT+1' })
+  timezone: string;
 
   @CreateDateColumn()
   createdAt: Date;

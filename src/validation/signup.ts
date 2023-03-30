@@ -9,6 +9,9 @@ const schema = Joi.object({
     .required(),
   password: Joi.string().min(8).required(),
   role: Joi.string().required(),
+  company: Joi.string(),
+  yearsOfExperience: Joi.string(),
+  title: Joi.string(),
 });
 
 const signupValidator = (req: Request, res: Response, next: () => void) => {

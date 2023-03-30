@@ -55,7 +55,7 @@ router.put('/users/:id/', authentication, profileValidator, updateProfile);
  *
  *  paths:
  *    /users/{id}/bio/:
- *      put:
+ *      patch:
  *        tags:
  *          - users
  *        description: Update user (Mentor) bio
@@ -88,7 +88,7 @@ router.put('/users/:id/', authentication, profileValidator, updateProfile);
  *            description: Forbidden
  *
  */
-router.put(
+router.patch(
   '/users/:id/bio/',
   authentication,
   UserMiddleware.findRole,
