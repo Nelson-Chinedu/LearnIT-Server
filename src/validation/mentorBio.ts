@@ -7,6 +7,8 @@ const schema = Joi.object({
   yearsOfExperience: Joi.string(),
   fee: Joi.string(),
   timezone: Joi.string(),
+  availability: Joi.boolean(),
+  acceptingMentees: Joi.boolean(),
 });
 
 const schemaParam = Joi.object({
