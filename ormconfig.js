@@ -24,7 +24,11 @@ const entities = isDevEnv()
 
 module.exports = {
   type: 'postgres',
-  url: connString,
+  username: process.env.POSTGRES_USERNAME,
+  password: process.env.POSTGRES_PASSWORD,
+  port: process.env.POSTGRES_PORT,
+  host: process.env.DB_HOST,
+  database: process.env.POSTGRES_DB,
   synchronize: getEnvVariables.synchronize,
   logging: getEnvVariables.logging,
   entities: [entities],

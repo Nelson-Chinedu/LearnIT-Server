@@ -23,7 +23,7 @@ import { sendMail } from './events/sendMail';
 const config = require('../ormconfig');
 
 const client: any = redis.createClient({
-  url: process.env.REDIS_URL,
+  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   legacyMode: true,
 });
 
