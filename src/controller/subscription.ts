@@ -10,6 +10,7 @@ import { respondWithSuccess, respondWithWarning } from '../util/httpResponse';
 const subscriptionController = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { mentorId, card } = req.body;
+  const { user: menteeAccountId } = req
 
   try {
     const user: Account | null = await UserServices.findUserById(req.user);
@@ -18,6 +19,7 @@ const subscriptionController = async (req: Request, res: Response) => {
     const subscription = await UserServices.addSubscription(id, {
       mentorId,
       card,
+      menteeAccountId
     });
 
     if (subscription) {

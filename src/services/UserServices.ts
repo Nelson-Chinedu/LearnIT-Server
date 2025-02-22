@@ -535,7 +535,7 @@ class UserServices {
   }
 
   async addSubscription(id: any, payload: any) {
-    const { card, mentorId } = payload;
+    const { card, mentorId, menteeAccountId } = payload;
     const expireDate = new Date();
     try {
       const newSubscription: Subscription = AppDataSource.manager.create(
@@ -543,13 +543,17 @@ class UserServices {
         {
           card,
           expireDate,
-          // menteeId: id,
           mentee: id,
-          // profile: mentorId,
+          account: menteeAccountId,
           mentor: mentorId,
         }
       );
       await AppDataSource.manager.save(newSubscription);
+      await AppDataSource.manager.createQueryBuilder()
+      .update(Account)
+      .set({isSubscribed: true})
+      .where('id = :id', {id: menteeAccountId}).execute()
+
       return newSubscription;
     } catch (error) {
       throw error;
@@ -571,6 +575,13 @@ class UserServices {
           'profile.lastname',
           'profile.picture',
           'bio.mentorBio',
+          'bio.title',
+          'bio.timezone',
+          'bio.availability',
+          'bio.acceptingMentees',
+          'bio.yearsOfExperience',
+          'bio.fee',
+          'bio.company'
         ])
         .where('account.role = :role', { role: 'mentor' })
         .getMany();
@@ -586,6 +597,7 @@ class UserServices {
         .getRepository(Subscription)
         .createQueryBuilder('subscription')
         .leftJoinAndSelect('subscription.mentor', 'mentor')
+        .leftJoinAndSelect('mentor.bio', 'bio')
         // the below query selects the profile detail relationship excluding the account details
         .select([
           'subscription.id',
@@ -593,6 +605,8 @@ class UserServices {
           'mentor.firstname',
           'mentor.lastname',
           'mentor.picture',
+          'bio.title',
+          'bio.company'
         ])
         .where('subscription.menteeId = :id', { id })
         .getMany();

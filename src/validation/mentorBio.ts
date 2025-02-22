@@ -26,7 +26,7 @@ const mentorBioValidator = (req: Request, res: Response, next: () => void) => {
   } else if (validationResult.error) {
     return res
       .status(400)
-      .send({ message: validationResult.error.details[0].message });
+      .send({ message: validationResult.error.details[0].message.replace(/"/g, '') });
   }
   next();
 };

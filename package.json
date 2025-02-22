@@ -54,6 +54,7 @@
     "redis": "^4.6.5",
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "^0.13.9",
+    "resend": "^4.1.2",
     "socket.io": "^4.5.4",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.3.0",

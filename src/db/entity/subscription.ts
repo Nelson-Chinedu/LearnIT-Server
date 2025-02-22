@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 
 import Profile from './Profile';
+import Account from './Account';
 
 @Entity('Subscription')
 export default class Subscription extends BaseEntity {
@@ -38,7 +39,6 @@ export default class Subscription extends BaseEntity {
       onDelete: 'CASCADE',
     }
   )
-  // this column maps to the mentor profile id
   @JoinColumn()
   profile: Profile;
 
@@ -50,7 +50,6 @@ export default class Subscription extends BaseEntity {
       onDelete: 'CASCADE',
     }
   )
-  // this column maps to the mentor profile id
   @JoinColumn()
   mentee: Profile;
 
@@ -62,9 +61,19 @@ export default class Subscription extends BaseEntity {
       onDelete: 'CASCADE',
     }
   )
-  // this column maps to the mentor profile id
   @JoinColumn()
   mentor: Profile;
+
+  @ManyToOne(
+    (_type: any) => Account,
+    (account: Account) => account.subscription,
+    {
+      eager: true,
+      onDelete: 'CASCADE',
+    }
+  )
+  @JoinColumn()
+  account: Account;
 
   @BeforeInsert()
   addId() {
