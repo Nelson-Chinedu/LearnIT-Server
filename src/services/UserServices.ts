@@ -13,6 +13,8 @@ import { UserRole } from '../db/entity/Account';
 
 import { AppDataSource } from '../index';
 
+import { IEditResource } from '../interface/IResource';
+
 interface ICreateUser {
   email: string;
   role: UserRole;
@@ -347,12 +349,30 @@ class UserServices {
     }
   }
 
+  async editResource(payload: IEditResource) {
+    const { name, url, categoryId, resourceId } = payload;
+
+    try {
+      const resource: UpdateResult = await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Resource)
+        .set({ name, url, category: categoryId })
+        .where('id = :id', { id: resourceId })
+        .execute();
+      return resource;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getResources(payload: any) {
     const { id, categoryId } = payload;
     try {
       const resources: Resource[] = await AppDataSource.manager
         .getRepository(Resource)
         .createQueryBuilder('resource')
+        .leftJoinAndSelect('resource.category', 'category')
+        .select(['resource', 'category.id'])
         .where('resource.profile = :id', { id })
         .andWhere('resource.category = :categoryId', {
           categoryId,
@@ -549,10 +569,12 @@ class UserServices {
         }
       );
       await AppDataSource.manager.save(newSubscription);
-      await AppDataSource.manager.createQueryBuilder()
-      .update(Account)
-      .set({isSubscribed: true})
-      .where('id = :id', {id: menteeAccountId}).execute()
+      await AppDataSource.manager
+        .createQueryBuilder()
+        .update(Account)
+        .set({ isSubscribed: true })
+        .where('id = :id', { id: menteeAccountId })
+        .execute();
 
       return newSubscription;
     } catch (error) {
@@ -581,7 +603,7 @@ class UserServices {
           'bio.acceptingMentees',
           'bio.yearsOfExperience',
           'bio.fee',
-          'bio.company'
+          'bio.company',
         ])
         .where('account.role = :role', { role: 'mentor' })
         .getMany();
@@ -606,7 +628,7 @@ class UserServices {
           'mentor.lastname',
           'mentor.picture',
           'bio.title',
-          'bio.company'
+          'bio.company',
         ])
         .where('subscription.menteeId = :id', { id })
         .getMany();
