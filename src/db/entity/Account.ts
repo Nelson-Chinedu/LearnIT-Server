@@ -13,6 +13,7 @@ import {
 
 import Profile from './Profile';
 import Course from './Course';
+import Subscription from './subscription';
 
 export enum UserRole {
   MENTOR = 'mentor',
@@ -42,9 +43,6 @@ export default class Account extends BaseEntity {
   @Column('boolean', { default: false })
   isSubscribed: boolean;
 
-  @Column('varchar', { default: '' })
-  subscription: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -56,6 +54,9 @@ export default class Account extends BaseEntity {
 
   @OneToMany((_type: any) => Course, (course: Course) => course.account)
   course: Course;
+
+  @OneToMany((_type: any) => Subscription, (subscription: Subscription) => subscription.account)
+  subscription: Subscription;
 
   @BeforeInsert()
   addId() {

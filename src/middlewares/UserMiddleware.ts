@@ -78,7 +78,7 @@ class UserMiddleware {
           role: user.role,
           verificationLink: `${process.env.CLIENT_URL}/auth/verify?t=${accessToken}`,
         };
-        if (process.env.NODE_ENV !== 'production') {
+        // if (process.env.NODE_ENV !== 'production') {
           eventEmitter.emit('verification_mail', {
             email: req.body.email,
             subject: 'Welcome to LearnIT! Confirm Your Email',
@@ -87,7 +87,7 @@ class UserMiddleware {
               url: payload.verificationLink,
             }),
           });
-        }
+        // }
         return respondWithWarning(
           res,
           400,

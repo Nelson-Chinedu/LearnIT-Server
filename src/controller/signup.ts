@@ -31,21 +31,23 @@ const signupController = async (req: Request, res: Response) => {
         verificationLink: `${process.env.CLIENT_URL}/auth/verify?t=${accessToken}`,
       };
 
-      if (process.env.NODE_ENV === 'production') {
+      // if (process.env.NODE_ENV === 'production') {
         eventEmitter.emit('verification_mail', {
-          email: req.body.email,
-          subject: 'Welcome to LearnIT! Confirm Your Email',
+          email: process.env.DEVELOPER_EMAIL,
+          from: process.env.MAIL_FROM,
+          subject: 'Confirm your LearnIT account',
           body: signupTemplate({
             name: `${req.body.firstname} ${req.body.lastname}`,
             url: payload.verificationLink,
+            role: req.body.role
           }),
         });
-      }
+      // }
 
       return respondWithSuccess(
         res,
         201,
-        'Account created successfully',
+        `We just sent a verification link to ${req.body.email}`,
         payload
       );
     }
