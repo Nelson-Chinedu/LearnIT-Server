@@ -19,3 +19,4 @@ coverage
 *.lcov
 lib-cov
 dump.rdb
+yarn.lock
