@@ -1,4 +1,4 @@
-import { UpdateResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import {
   Account,
   Bio,
@@ -13,7 +13,7 @@ import { UserRole } from '../db/entity/Account';
 
 import { AppDataSource } from '../index';
 
-import { IEditResource } from '../interface/IResource';
+import { IEditResource, IResource } from '../interface/IResource';
 
 interface ICreateUser {
   email: string;
@@ -358,6 +358,22 @@ class UserServices {
         .update(Resource)
         .set({ name, url, category: categoryId })
         .where('id = :id', { id: resourceId })
+        .execute();
+      return resource;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteResource(payload: IResource) {
+    const { resourceId } = payload;
+
+    try {
+      const resource: DeleteResult =  await AppDataSource.manager
+        .getRepository(Resource)
+        .createQueryBuilder('resource')
+        .delete()
+        .where('id = :resourceId', { resourceId })
         .execute();
       return resource;
     } catch (error) {

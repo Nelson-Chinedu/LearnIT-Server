@@ -4,6 +4,7 @@ import addResource from '../../controller/addResource';
 // import getResource from '../../controller/getResource';
 import getAllResource from '../../controller/getAllResource';
 import editResource from '../../controller/editResource';
+import deleteResource from '../../controller/deleteResource';
 
 import { authentication } from '../../middlewares/authentication';
 
@@ -74,5 +75,7 @@ router.get('/resources/:id/', authentication, getAllResource);
 router.post('/resources/:id/', authentication, addResource);
 
 router.put('/resources/:id/', authentication, editResource);
+
+router.delete('/resources/:id/', authentication, deleteResource);
 
 export default router;
