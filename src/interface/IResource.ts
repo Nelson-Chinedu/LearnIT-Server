@@ -1,6 +1,9 @@
-export interface IEditResource {
+export interface IResource {
+   resourceId: string;
+}
+
+export interface IEditResource extends IResource {
   name: string;
   url: string;
-  resourceId: string;
   categoryId: string;
 }
