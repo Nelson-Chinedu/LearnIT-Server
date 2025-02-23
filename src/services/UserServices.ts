@@ -317,6 +317,22 @@ class UserServices {
     }
   }
 
+  async deleteCategory(payload: any) {
+    const { categoryId } = payload;
+
+    try {
+      const category: DeleteResult =  await AppDataSource.manager
+        .getRepository(Category)
+        .createQueryBuilder('category')
+        .delete()
+        .where('id = :categoryId', { categoryId })
+        .execute();
+      return category;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getCategories(id: Express.User | undefined) {
     try {
       const categories: Category[] = await AppDataSource.manager

@@ -3,6 +3,7 @@ import express from 'express';
 import addCategory from '../../controller/addCategory';
 import getAllCategory from '../../controller/getAllCategory';
 import getResource from '../../controller/getResource';
+import deleteCategory from '../../controller/deleteCategory'
 
 import { authentication } from '../../middlewares/authentication';
 
@@ -90,6 +91,8 @@ router.post('/category/:id/', authentication, addCategory);
  *            description: Unauthorized
  */
 router.get('/category/:id/', authentication, getAllCategory);
+
+router.delete('/category/:id', authentication, deleteCategory)
 
 /**
  * @swagger
