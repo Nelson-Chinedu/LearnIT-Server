@@ -10,6 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  Index,
 } from 'typeorm';
 
 import Resource from './Resource';
@@ -17,6 +18,7 @@ import Profile from './Profile';
 
 @Entity('Category')
 export default class Category extends BaseEntity {
+  @Index({ unique: true})
   @PrimaryColumn('uuid')
   id: string;
 
@@ -35,6 +37,7 @@ export default class Category extends BaseEntity {
   )
   resource: Resource;
 
+  @Index()
   @ManyToOne((_type: any) => Profile, (profile: Profile) => profile.category, {
     eager: true,
     onDelete: 'CASCADE',

@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   OneToMany,
+  Index,
 } from 'typeorm';
 
 import Account from './Account';
@@ -21,6 +22,7 @@ import Resource from './Resource';
 import Subscription from './subscription';
 @Entity('Profile')
 export default class Profile extends BaseEntity {
+  @Index({unique: true})
   @PrimaryColumn('uuid')
   id: string;
 
@@ -60,6 +62,7 @@ export default class Profile extends BaseEntity {
   @OneToOne((_type: any) => Bio, (bio: Bio) => bio.profile)
   bio: Bio;
 
+  @Index({unique: true})
   @OneToOne((_type: any) => Account, (account: Account) => account.profile, {
     eager: true,
     onDelete: 'CASCADE',

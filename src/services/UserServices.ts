@@ -321,7 +321,7 @@ class UserServices {
     const { categoryId } = payload;
 
     try {
-      const category: DeleteResult =  await AppDataSource.manager
+      const category: DeleteResult = await AppDataSource.manager
         .getRepository(Category)
         .createQueryBuilder('category')
         .delete()
@@ -385,7 +385,7 @@ class UserServices {
     const { resourceId } = payload;
 
     try {
-      const resource: DeleteResult =  await AppDataSource.manager
+      const resource: DeleteResult = await AppDataSource.manager
         .getRepository(Resource)
         .createQueryBuilder('resource')
         .delete()
@@ -589,28 +589,33 @@ class UserServices {
   async addSubscription(id: any, payload: any) {
     const { card, mentorId, menteeAccountId } = payload;
     const expireDate = new Date();
+
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.startTransaction();
+
     try {
-      const newSubscription: Subscription = AppDataSource.manager.create(
-        Subscription,
-        {
-          card,
-          expireDate,
-          mentee: id,
-          account: menteeAccountId,
-          mentor: mentorId,
-        }
-      );
-      await AppDataSource.manager.save(newSubscription);
-      await AppDataSource.manager
+      const newSub = AppDataSource.manager.create(Subscription, {
+        card,
+        expireDate,
+        mentee: id,
+        account: menteeAccountId,
+        mentor: mentorId,
+      });
+
+      await queryRunner.manager.save(newSub);
+      await queryRunner.manager
         .createQueryBuilder()
         .update(Account)
         .set({ isSubscribed: true })
         .where('id = :id', { id: menteeAccountId })
         .execute();
-
-      return newSubscription;
+      await queryRunner.commitTransaction();
+      return newSub;
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 
