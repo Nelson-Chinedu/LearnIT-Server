@@ -9,12 +9,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  Index,
 } from 'typeorm';
 
 import Profile from './Profile';
 
 @Entity('Bio')
 export default class Bio extends BaseEntity {
+  @Index()
   @PrimaryColumn('uuid')
   id: string;
 
@@ -48,6 +50,7 @@ export default class Bio extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Index()
   @OneToOne((_type: any) => Profile, (profile: Profile) => profile.bio, {
     eager: true,
     onDelete: 'CASCADE',

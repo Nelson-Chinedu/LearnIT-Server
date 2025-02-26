@@ -9,6 +9,7 @@ import {
   BeforeInsert,
   OneToOne,
   OneToMany,
+  Index,
 } from 'typeorm';
 
 import Profile from './Profile';
@@ -22,15 +23,18 @@ export enum UserRole {
 
 @Entity('Account')
 export default class Account extends BaseEntity {
+  @Index({unique: true})
   @PrimaryColumn('uuid')
   id: string;
 
+  @Index({unique: true})
   @Column('varchar', { length: 255, unique: true })
   email: string;
 
   @Column('varchar', { length: 255 })
   password: string;
 
+  @Index()
   @Column({ type: 'enum', enum: UserRole, default: UserRole.MENTEE })
   role: UserRole;
 

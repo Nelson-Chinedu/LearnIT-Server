@@ -33,13 +33,7 @@ export default class Subscription extends BaseEntity {
 
   @ManyToOne(
     (_type: any) => Profile,
-    (profile: Profile) => profile.subscription,
-    {
-      eager: true,
-      onDelete: 'CASCADE',
-    }
-  )
-  @JoinColumn()
+    (profile: Profile) => profile.subscription)
   profile: Profile;
 
   @ManyToOne(
