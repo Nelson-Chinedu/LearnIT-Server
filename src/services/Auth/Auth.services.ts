@@ -1,6 +1,6 @@
 import { UpdateResult } from 'typeorm';
 import { Account, Bio, Profile } from '../../db';
-import { UserRole } from '../../db/entity/Account-entity';
+import { UserRole } from '../../db/entity/Account.entity';
 
 import { AppDataSource } from '../../index';
 

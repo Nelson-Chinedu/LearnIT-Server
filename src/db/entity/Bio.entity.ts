@@ -12,7 +12,7 @@ import {
   Index,
 } from 'typeorm';
 
-import Profile from './Profile-entity';
+import Profile from './Profile.entity';
 
 @Entity('Bio')
 export default class Bio extends BaseEntity {

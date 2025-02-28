@@ -10,6 +10,7 @@ import categoryRoute from './category';
 import courseRoute from './course';
 import resourceRoute from './resource';
 import subscriptionRoute from './subscription';
+import taskRoute from './task';
 
 const specs = swaggerJsDoc(swaggerDefinition);
 const router = express.Router();
@@ -28,5 +29,6 @@ router.use(prefix, categoryRoute);
 router.use(prefix, courseRoute);
 router.use(prefix, resourceRoute);
 router.use(prefix, subscriptionRoute);
+router.use(prefix, taskRoute)
 
 export default router;

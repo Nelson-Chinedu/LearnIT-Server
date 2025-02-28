@@ -11,8 +11,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import Category from './Category-entity';
-import Profile from './Profile-entity';
+import Category from './Category.entity';
+import Profile from './Profile.entity';
 
 @Entity('Resource')
 export default class Resource extends BaseEntity {

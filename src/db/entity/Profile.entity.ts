@@ -13,16 +13,18 @@ import {
   Index,
 } from 'typeorm';
 
-import Account from './Account-entity';
-import Course from './Course-entity';
-import Bio from './Bio-entity';
-import Enroll from './Enroll-entity';
-import Category from './Category-entity';
-import Resource from './Resource-entity';
-import Subscription from './Subscription-entity';
+import Account from './Account.entity';
+import Course from './Course.entity';
+import Bio from './Bio.entity';
+import Enroll from './Enroll.entity';
+import Category from './Category.entity';
+import Resource from './Resource.entity';
+import Subscription from './Subscription.entity';
+import Task from './Task.entity';
+
 @Entity('Profile')
 export default class Profile extends BaseEntity {
-  @Index({unique: true})
+  @Index({ unique: true })
   @PrimaryColumn('uuid')
   id: string;
 
@@ -62,7 +64,7 @@ export default class Profile extends BaseEntity {
   @OneToOne((_type: any) => Bio, (bio: Bio) => bio.profile)
   bio: Bio;
 
-  @Index({unique: true})
+  @Index({ unique: true })
   @OneToOne((_type: any) => Account, (account: Account) => account.profile, {
     eager: true,
     onDelete: 'CASCADE',
@@ -89,6 +91,9 @@ export default class Profile extends BaseEntity {
     (subscription: Subscription) => subscription.profile
   )
   subscription: Subscription[];
+
+  @OneToMany((_type: any) => Task, (task: Task) => task.profile)
+  task: Task[];
 
   @BeforeInsert()
   addId() {
