@@ -1,10 +1,10 @@
 import express from 'express';
 
-import addResource from '../../controller/addResource';
+import addResource from '../../controller/Resource/add-resource.controller';
 // import getResource from '../../controller/getResource';
-import getAllResource from '../../controller/getAllResource';
-import editResource from '../../controller/editResource';
-import deleteResource from '../../controller/deleteResource';
+import getAllResource from '../../controller/Resource/get-all-resource.controller';
+import editResource from '../../controller/Resource/edit-resource.controller';
+import deleteResource from '../../controller/Resource/delete-resource.controller';
 
 import { authentication } from '../../middlewares/authentication';
 

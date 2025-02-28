@@ -1,10 +1,10 @@
 import express from 'express';
 
-import signupController from '../../controller/signup';
-import signinController from '../../controller/signin';
-import getProfileController from '../../controller/getProfile';
-import verifyEmailController from '../../controller/verifyEmail';
-import logoutController from '../../controller/logout';
+import signupController from '../../controller/Auth/signup.controller';
+import signinController from '../../controller/Auth/signin.controller';
+import getProfileController from '../../controller/Auth/get-profile.controller';
+import verifyEmailController from '../../controller/Auth/verify-email.controller';
+import logoutController from '../../controller/Auth/logout.controller';
 
 import signupValidator from '../../validation/signup';
 import signinValidator from '../../validation/signin';

@@ -1,11 +1,11 @@
-import Account from './entity/Account';
-import Profile from './entity/Profile';
-import Bio from './entity/Bio';
-import Course from './entity/Course';
-import Category from './entity/Category';
-import Resource from './entity/Resource';
-import Enroll from './entity/Enroll';
-import Subscription from './entity/subscription';
+import Account from './entity/Account-entity';
+import Profile from './entity/Profile-entity';
+import Bio from './entity/Bio-entity';
+import Course from './entity/Course-entity';
+import Category from './entity/Category-entity';
+import Resource from './entity/Resource-entity';
+import Enroll from './entity/Enroll-entity';
+import Subscription from './entity/Subscription-entity';
 
 export {
   Account,

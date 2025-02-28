@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { Account } from '../db';
 
-import UserServices from '../services/UserServices';
+import AuthServices from '../services/Auth/Auth.services';
 
 import Hash from '../util/Hash';
 import token from '../util/Token';
@@ -22,7 +22,7 @@ class UserMiddleware {
    */
   async findEmail(req: Request, res: Response, next: () => void) {
     try {
-      const user: Account | null = await UserServices.findUserByEmail(
+      const user: Account | null = await AuthServices.findUserByEmail(
         req.body.email
       );
       if (user) {
@@ -48,7 +48,7 @@ class UserMiddleware {
    */
   async findUser(req: Request, res: Response, next: () => void) {
     try {
-      const user: Account | null = await UserServices.findUserByEmail(
+      const user: Account | null = await AuthServices.findUserByEmail(
         req.body.email
       );
 
@@ -131,7 +131,7 @@ class UserMiddleware {
   async findRole(req: Request, res: Response, next: () => void) {
     try {
       const { user: id } = req;
-      const account: Account | null = await UserServices.findUserById(id);
+      const account: Account | null = await AuthServices.findUserById(id);
       if (account) {
         const { role } = account;
         if (role === 'mentor') {
