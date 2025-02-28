@@ -1,14 +1,14 @@
 import express from 'express';
 
-import addCourse from '../../controller/addCourse';
-import getCourses from '../../controller/getCourses';
-import videoUpload from '../../controller/videoUpload';
-import thumbnailUpload from '../../controller/thumbnailUpload';
-import getAllCourses from '../../controller/getAllCourses';
-import enrollCourse from '../../controller/enrollCourse';
-import getEnrolledCourse from '../../controller/getEnrolledCourse';
-import unenrollCourse from '../../controller/unEnrollCourse';
-import getEnrollCourseDetailController from '../../controller/getEnrollCourseDetail';
+import addCourse from '../../controller/Course/add-course.controller';
+import getCourses from '../../controller/Course/get-courses.controller';
+import videoUpload from '../../controller/Upload/video-upload.controller';
+import thumbnailUpload from '../../controller/Upload/thumbnail-upload.controller';
+import getAllCourses from '../../controller/Course/get-all-courses.controller';
+import enrollCourse from '../../controller/Course/enroll-course.controller';
+import getEnrolledCourse from '../../controller/Course/get-enrolled-course.controller';
+import unenrollCourse from '../../controller/Course/unenroll-Course.controller';
+import getEnrollCourseDetailController from '../../controller/Course/get-enroll-course-detail.controller';
 
 import { authentication } from '../../middlewares/authentication';
 import UserMiddleware from '../../middlewares/UserMiddleware';

@@ -1,9 +1,9 @@
 import express from 'express';
 
-import addCategory from '../../controller/addCategory';
-import getAllCategory from '../../controller/getAllCategory';
-import getResource from '../../controller/getResource';
-import deleteCategory from '../../controller/deleteCategory'
+import addCategory from '../../controller/Category/add-category.controller';
+import getAllCategory from '../../controller/Category/get-all-category.controller';
+import getResource from '../../controller/Resource/get-resource.controller';
+import deleteCategory from '../../controller/Category/delete-category.controller'
 
 import { authentication } from '../../middlewares/authentication';
 

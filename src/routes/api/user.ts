@@ -1,9 +1,9 @@
 import express from 'express';
 
-import updateBio from '../../controller/updateBio';
-import updateProfile from '../../controller/updateProfile';
-import getBioController from '../../controller/getBio';
-import imageUpload from '../../controller/imageUpload';
+import updateBio from '../../controller/Bio/update-bio.controller';
+import updateProfile from '../../controller/Auth/update-profile.controller';
+import getBioController from '../../controller/Bio/get-bio.controller';
+import imageUpload from '../../controller/Upload/image-upload.controller';
 
 import { authentication } from '../../middlewares/authentication';
 import UserMiddleware from '../../middlewares/UserMiddleware';
