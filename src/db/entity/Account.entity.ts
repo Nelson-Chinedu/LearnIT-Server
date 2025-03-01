@@ -12,9 +12,9 @@ import {
   Index,
 } from 'typeorm';
 
-import Profile from './Profile-entity';
-import Course from './Course-entity';
-import Subscription from './Subscription-entity';
+import Profile from './Profile.entity';
+import Course from './Course.entity';
+import Subscription from './Subscription.entity';
 
 export enum UserRole {
   MENTOR = 'mentor',

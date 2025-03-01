@@ -13,8 +13,8 @@ import {
   Index,
 } from 'typeorm';
 
-import Resource from './Resource-entity';
-import Profile from './Profile-entity';
+import Resource from './Resource.entity';
+import Profile from './Profile.entity';
 
 @Entity('Category')
 export default class Category extends BaseEntity {

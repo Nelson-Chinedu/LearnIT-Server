@@ -11,9 +11,9 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import Account from './Account-entity';
-import Profile from './Profile-entity';
-import Enroll from './Enroll-entity';
+import Account from './Account.entity';
+import Profile from './Profile.entity';
+import Enroll from './Enroll.entity';
 
 @Entity('Course')
 export default class Course extends BaseEntity {

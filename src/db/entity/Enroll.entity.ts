@@ -10,8 +10,8 @@ import {
   BeforeInsert,
 } from 'typeorm';
 
-import Course from './Course-entity';
-import Profile from './Profile-entity';
+import Course from './Course.entity';
+import Profile from './Profile.entity';
 
 @Entity('Enroll')
 export default class Enroll extends BaseEntity {

@@ -11,8 +11,8 @@ import {
   BeforeInsert,
 } from 'typeorm';
 
-import Profile from './Profile-entity';
-import Account from './Account-entity';
+import Profile from './Profile.entity';
+import Account from './Account.entity';
 
 @Entity('Subscription')
 export default class Subscription extends BaseEntity {
