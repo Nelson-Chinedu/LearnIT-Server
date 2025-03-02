@@ -92,7 +92,7 @@ export default class Profile extends BaseEntity {
   )
   subscription: Subscription[];
 
-  @OneToMany((_type: any) => Task, (task: Task) => task.profile)
+  @OneToMany((_type: any) => Task, (task: Task) => task.mentee)
   task: Task[];
 
   @BeforeInsert()

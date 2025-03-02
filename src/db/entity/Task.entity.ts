@@ -6,11 +6,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
 } from 'typeorm';
 import { v4 as uuidV4 } from 'uuid';
 
 import Profile from './Profile.entity';
+import Feedback from './Feedback.entity';
 
 export enum TaskStatus {
   TODO = 'Todo',
@@ -18,7 +20,7 @@ export enum TaskStatus {
   IN_REVIEW = 'In-Review',
   COMPLETED = 'Completed',
   SUBMITTED = 'Submitted',
-  IN_PROGRESS = 'In-Progress'
+  IN_PROGRESS = 'In-Progress',
 }
 
 @Entity('Task')
@@ -29,11 +31,17 @@ export default class Task extends BaseEntity {
   @Column('varchar', { length: 255 })
   title: string;
 
-  @Column({default: ''})
+  @Column({ default: '' })
   note: string;
 
-  @Column('varchar', { length: 20 })
+  @Column('varchar', { length: 30 })
   dueDate: Date;
+
+  @Column('varchar', {length: '255'})
+  submissionUrl: string;
+
+  @Column('text')
+  supportingNote: string;
 
   @Column({ type: 'enum', enum: TaskStatus, default: TaskStatus.TODO })
   status: string;
@@ -57,6 +65,9 @@ export default class Task extends BaseEntity {
   })
   @JoinColumn()
   mentee: Profile;
+
+  @OneToMany((_type: any) => Feedback, (feedback: Feedback) => feedback.task)
+  feedback: Feedback[]
 
   @BeforeInsert()
   addId() {

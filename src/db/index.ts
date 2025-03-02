@@ -7,6 +7,7 @@ import Resource from './entity/Resource.entity';
 import Enroll from './entity/Enroll.entity';
 import Subscription from './entity/Subscription.entity';
 import Task from './entity/Task.entity'
+import Feedback from './entity/Feedback.entity'
 
 export {
   Account,
@@ -17,5 +18,6 @@ export {
   Resource,
   Enroll,
   Subscription,
-  Task
+  Task,
+  Feedback
 };
