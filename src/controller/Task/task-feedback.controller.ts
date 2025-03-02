@@ -6,34 +6,28 @@ import {
   respondWithWarning,
 } from '../../util/httpResponse';
 
-import { Account } from '../../db';
-
 import AuthServices from '../../services/Auth/Auth.services';
 import TaskServices from '../../services/Task/Task.services';
 
-import { ITask } from '../../interface/ITask';
+import { Account } from '../../db';
 
-const mentorTasks = async (req: Request, res: Response) => {
-  const { mentorId, menteeId } = req.params;
+const updateTaskFeedbackController = async (req: Request, res: Response) => {
+  const { taskId } = req.params;
+  const { feedback } = req.body;
 
   try {
     const user: Account | null = await AuthServices.findUserById(req.user);
 
     if (!user) respondWithWarning(res, 401, 'unauthorized', {});
 
-    const tasks: ITask[] = await TaskServices.getMentorTasks(
-      mentorId,
-      menteeId
-    );
-    if (tasks.length > 0) {
-      respondWithSuccess(res, 200, 'Successfull', tasks);
-    } else {
-      respondWithSuccess(res, 404, 'Task not found', []);
-    }
+    const newFeedback = await TaskServices.taskFeedback({ feedback, taskId });
+
+    respondWithSuccess(res, 201, 'Feedback created successfully', newFeedback);
+
   } catch (error) {
     winstonEnvLogger.error({ message: 'An error occured', error });
     respondWithWarning(res, 400, 'An error occurred', {});
   }
 };
 
-export default mentorTasks;
+export default updateTaskFeedbackController;

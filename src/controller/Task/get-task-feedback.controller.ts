@@ -6,29 +6,26 @@ import {
   respondWithWarning,
 } from '../../util/httpResponse';
 
-import { Account } from '../../db';
+import { Account, Feedback } from '../../db';
 
 import AuthServices from '../../services/Auth/Auth.services';
 import TaskServices from '../../services/Task/Task.services';
 
-import { ITask } from '../../interface/ITask';
-
-const mentorTasks = async (req: Request, res: Response) => {
-  const { mentorId, menteeId } = req.params;
+const taskFeedback = async (req: Request, res: Response) => {
+  const { mentorId, taskId } = req.params;
 
   try {
     const user: Account | null = await AuthServices.findUserById(req.user);
 
     if (!user) respondWithWarning(res, 401, 'unauthorized', {});
 
-    const tasks: ITask[] = await TaskServices.getMentorTasks(
+    const feedback: Feedback[] | null = await TaskServices.getTaskFeedback(
       mentorId,
-      menteeId
+      taskId
     );
-    if (tasks.length > 0) {
-      respondWithSuccess(res, 200, 'Successfull', tasks);
-    } else {
-      respondWithSuccess(res, 404, 'Task not found', []);
+
+    if (feedback) {
+      respondWithSuccess(res, 200, 'Successfull', feedback);
     }
   } catch (error) {
     winstonEnvLogger.error({ message: 'An error occured', error });
@@ -36,4 +33,4 @@ const mentorTasks = async (req: Request, res: Response) => {
   }
 };
 
-export default mentorTasks;
+export default taskFeedback;

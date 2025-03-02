@@ -41,6 +41,7 @@ class SubscriptionServices {
           'profile.picture AS picture',
           'profile.phone AS phone',
           'account.isSubscribed AS is_active',
+          'account.email AS email',
         ])
         .where('subscription.mentor = :mentorId', {
           mentorId: id,
@@ -171,6 +172,35 @@ class SubscriptionServices {
         .where('subscription.mentorId = :id', { id })
         .getMany();
       return subscribedMentors;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // getSubscribedMentee - used to get mentee detail that is subscribed to a mentor
+  async getSubscribedMentee(
+    mentorId: Express.User | undefined,
+    id: Express.User | undefined
+  ) {
+    try {
+      const mentee = await AppDataSource.manager
+        .getRepository(Subscription)
+        .createQueryBuilder('subscription')
+        .leftJoinAndSelect('subscription.mentee', 'mentee')
+        .leftJoinAndSelect('subscription.mentor', 'mentor')
+        .leftJoinAndSelect('subscription.account', 'account')
+        // the below query selects the profile detail relationship excluding the account details
+        .select([
+          'mentee.id AS id',
+          'mentee.firstname AS firstname',
+          'mentee.lastname AS lastname',
+          'mentee.picture AS picture',
+          'account.email AS email',
+        ])
+        .where('subscription.mentorId = :mentorId', { mentorId })
+        .andWhere('subscription.menteeId = :menteeId', { menteeId: id })
+        .getRawOne();
+      return mentee;
     } catch (error) {
       throw error;
     }
